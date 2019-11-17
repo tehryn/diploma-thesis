@@ -25,15 +25,14 @@
         {
             "matches" : [ "*://*.stud.fit.vutbr.cz/~xmatej52/*" ],
             "js": [
-                "/src/js/openpgp.js",
-                "/src/js/pgpDecryptor.js"
+                "/src/js/gnupg_decryptor.js"
             ]
         }
     ],
     
     "browser_specific_settings" : {
         "gecko": {
-            "id": "GnuPG_Decryptor@stud.fit.vutbr.cz",
+            "id": "GnuPG_Decryptor@fit.vutbr.cz",
             "strict_min_version": "50.0"
         }
     }
