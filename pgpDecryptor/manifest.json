@@ -1,0 +1,40 @@
+{
+    "manifest_version" : 2,
+    "name" : "GnuPG_Decryptor",
+    "version" : "1.0",
+
+    "description" : "Bla bla bla bla bla",
+
+    "icons" : {
+        "16":  "/icons/gnupg_16.png",
+        "32":  "/icons/gnupg_32.png",
+        "64":  "/icons/gnupg_64.png",
+        "128": "/icons/gnupg_128.png",
+        "256": "/icons/gnupg_128.png"
+    },
+
+    "permissions" : [
+        "nativeMessaging"
+    ],
+
+    "background" : {
+        "scripts" : [ "/src/js/background.js" ]
+    },
+    "browser_action": {},
+    "content_scripts" : [
+        {
+            "matches" : [ "*://*.stud.fit.vutbr.cz/~xmatej52/*" ],
+            "js": [
+                "/src/js/openpgp.js",
+                "/src/js/pgpDecryptor.js"
+            ]
+        }
+    ],
+    
+    "browser_specific_settings" : {
+        "gecko": {
+            "id": "GnuPG_Decryptor@stud.fit.vutbr.cz",
+            "strict_min_version": "50.0"
+        }
+    }
+}
