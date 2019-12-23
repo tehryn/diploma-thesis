@@ -70,3 +70,4 @@ while True:
         else:
             decrypted = base64.b64encode( decrypted )
             send_message( encode_message( { 'messageId' : message[ 'messageId' ], 'success' : 1, 'message' : '', 'type' : 'decryptResponse', 'data' : decrypted.decode() } ) )
+            
