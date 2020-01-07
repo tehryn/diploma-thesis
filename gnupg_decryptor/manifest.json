@@ -8,9 +8,11 @@
     "icons" : {
         "16":  "/icons/gnupg_16.png",
         "32":  "/icons/gnupg_32.png",
+        "48":  "/icons/gnupg_48.png",
         "64":  "/icons/gnupg_64.png",
+        "96":  "/icons/gnupg_96.png",
         "128": "/icons/gnupg_128.png",
-        "256": "/icons/gnupg_128.png"
+        "256": "/icons/gnupg_256.png"
     },
 
     "permissions" : [

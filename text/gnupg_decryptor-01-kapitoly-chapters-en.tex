@@ -11,7 +11,7 @@ The most popular information resource today is undoubtedly the internet. One of 
 
 Usage of cryptography is the most frequently used solution for this problem. Data can be encrypted during the communication or encrypted data can be stored on servers and then transferred with or without further encryptions. This thesis will use the second approach, where data are already encrypted on a remote server. Under the term of data, you can imagine usual web page including not only text, images or videos but JavaScript and CSS as well. Some elements of this page (or even whole page) can be encrypted using an symmetric cypher and different parts can be encrypted using a different key or some parts can be encrypted using multiple keys. These keys are encrypted with asymmetric cypher and they are part of encrypted content as well. The outcome of this thesis will be a web browser extension that will be able to detect encrypted content (images, videos, text, etc.) and decrypt it for a user using his available keys. With this encryption/decryption system, users can create web pages where different data can be accessible for different users without the need for authentication on a remote server.
 
-The target platform will be GNU/Linux and web extensions will be implemented for Firefox browser. Data will be decrypted with the Linux command line application called gpg, that will be used not only for decryption but for key management as well.
+The target platform will be GNU/Linux and broswer extensions will be implemented for Firefox browser. Data will be decrypted with the Linux command line application called gpg, that will be used not only for decryption but for key management as well.
 
 % \chapter{Theory}
 % To develop functional and sufficient software for decrypting web pages, it is necessary to understand the tools we will work with. The purpose of this chapter is to introduce you to used technology in this thesis, such as GnuPG or WebExtensions. These tools have their advantages, disadvantages, and limits.
@@ -221,12 +221,13 @@ gpg: Good signature from "Jiří Matějka <xmatej52@stud.fit.vutbr.cz>"
 KGpg is KDE's application providing a simple interface for GnuPG. The application can help to set up and manage keys, import and export keys, view key signatures, trust status, expiry dates or encrypt/decrypt text or files. KGpg is a free and open source software, available for Linux and similar operating systems. Since KGpg provides user interface, KGpg makes it easy to work with the gpg command--line application so that user does not remember all the gpg's commands, particularly those for key management and data encryption/decryption. \cite{KGpg}
 
 \section{Alternative software}
-Although GnuPG is a very popular software and one of the most used implementations of OpenPGP standard implementation, there are some alternatives for GnuPGP that also implements OpenPGP standard. OpenPGP.js is one of such alternatives and was even used in this thesis for prototype development.
+Although GnuPG is a very popular software and one of the most used implementations of OpenPGP standard implementation, there are some alternatives for GnuPG that also implements OpenPGP standard. OpenPGP.js is one of such alternatives and was even used in this thesis for prototype development.
 
 \subsection*{OpenPGP.js}
+\label{text:openpgpjs}
 OpenPGP.js is a project that aims to provide an Open Source OpenPGP JavaScript library so it can be used on most of the devices. While many other implementations of OpenPGP standard are aimed at using native code, OpenPGP.js is meant to bypass this requirement so people are not forced to install gpg on their machines in order to use the library. The idea behind OpenPGP.js is to implement all the needed OpenPGP functionality in JavaScript library that can be reused in other projects that provides web browser extensions or server applications. \cite{OpenPGPjs}
 
-OpenPGP.js library was used for the implementation of the first prototype \ref{prototype:OpenPGPjs}. Implemented prototype was able to encrypt and decrypt elements using hardcoded private and public keys in the source code. Accessing the user's public and private keys was a serious problem.  When background script and native application were developed, this library was no longer necessary and was replaced with gpg (using gpg also solved the problem with private and public key access).
+OpenPGP.js library was used for the implementation of the first prototype (Section \ref{prototype:OpenPGPjs}). Implemented prototype was able to encrypt and decrypt elements using hardcoded private and public keys in the source code. Accessing the user's public and private keys was a serious problem.  When background script and native application were developed, this library was no longer necessary and was replaced with gpg (using gpg also solved the problem with private and public key access).
 
 \chapter{WebExtensions API}
 Broswer extensions are software programs that extend or modify the capabilities of a browser. They enable users to tailor web browser functionality and behaviour to individual needs or preferences. They are built on web technologies such as HTML, JavaScript, and CSS. Browser extension developed in this thesis is built using the WebExtensions API. \cite{chromeExtensions}
@@ -266,24 +267,131 @@ Firefox also supports the usage of icons in SVG format but it is necessary to sp
 \subsection{Content Scripts}
 Content scripts are used to access and manipulate the content of web pages. The content script is executed in the context of a particular web page and just like the scripts loaded by the web page, a content script can access DOM APIs as well.
 
-Content scripts can only access a relatively small subset of the WebExtension API, but they can communicate with background scripts \ref{text:backgroundScripts} using a messaging system, thereby indirectly access the WebExtensions API.
+Content scripts can only access a relatively small subset of the WebExtension API, but they can communicate with background scripts (Section \ref{text:backgroundScripts}) using a messaging system, thereby indirectly access the WebExtensions API.
 
 \subsubsection*{Content Script Enviroment}
-As mentioned earlier, content scripts can access DOM APIs therefore they are able to modify and to access DOM just like normal page scripts can. They can furthermore detect and see any changes that were made to the DOM by page scripts. However, it is worth mentioning that content script does not share JavaScript variables defined by page scripts and if page script redefines a built--in DOM property, the content script will be able only to access the original version of the modified property. The same is true in reverse -- page scripts cannot see JavaScript property changes made by the content script.
+As mentioned earlier, content scripts can access DOM APIs therefore they are able to modify and to access DOM just like normal page scripts can. They can furthermore detect and see any changes that were made to the DOM by page scripts. However, it is worth mentioning that content script does not share JavaScript variables defined by page scripts and if page script redefines a built--in DOM property, the content script will be able only to access the original version of the modified property. The same is true in reverse -- page scripts cannot see JavaScript property changes made by the content script. \cite{extensionContentScripts}
 
-Another feature content scrips have is the possibility of making requests using \textit{window.XMLHttpRequest} and \textit{window.fetch()} APIs. Content script shares the same cross--domain privileges with the rest of the extension. So in case the extension has requested cross--domain access for domain using the permissions key in the manifest file, then its content script can get access to the same domain as well.
+Another feature content scrips have is the possibility of making requests using \textit{window.XMLHttpRequest} and \textit{window.fetch()} APIs. Content script shares the same cross--domain privileges with the rest of the extension. So in case the extension has requested cross--domain access for domain using the permissions key in the manifest file, then its content script can get access to the same domain as well. \cite{extensionContentScripts}
 
-Possibility of communication with background scripts \ref{text:backgroundScripts} is another important feature of content scripts. There are two basic types of communication between the content and background scripts -- one--of messages and longer--lived connection. One--off messaging is useful when none or only one response is expected to a message and when only a small number of scripts listen to receive messages. On the other hand, it is recommended to use connection-based messaging where multiple messages are exchanged or where the extension need information about task progress, needs to be notified if a task is interrupted, or may want to interrupt a task initiated using messaging.
+Possibility of communication with background scripts (Section \ref{text:backgroundScripts}) is another important feature of content scripts. There are two basic types of communication between the content and background scripts -- one--of messages and longer--lived connection. One--off messaging is useful when none or only one response is expected to a message and when only a small number of scripts listen to receive messages. On the other hand, it is recommended to use connection-based messaging where multiple messages are exchanged or where the extension need information about task progress, needs to be notified if a task is interrupted, or may want to interrupt a task initiated using messaging. \cite{extensionContentScripts}
 
 \subsection{Background Scripts}
 \label{text:backgroundScripts}
-\subsection{Sidebars, Popups, and Option Pages}
-\subsection{Web--Accessible Resources}
+Background scripts are for mainntaining long--term state or for performing long--term operations independently of the lifetime of any particular web page or broswer window. Background scripts loaded with extention installation and stay loaded until the extention is disabled or uninstalled. Developers can also profit from WebExtension APIs in background scripts, although it is necessary to specify any needed permissions in the manifest file. \cite{extensionAnatomy}
 
-\chapter{Draft and Implementation}
+Background page is special page that provides a \textit{window} global, along with all the standard DOM APIs provided by it. Since background scripts run in context of the background page, they can access the the \textit{window} global. \cite{extensionAnatomy}
+
+Background scripts does not have direct access to web pages. But they are alowed to load content scripts into web pages and they can communicate with these scripts. \cite{extensionAnatomy}
+\subsection{Sidebars, Popups, and Option Pages}
+Extensions can include various user interface components. Those components are defined with an HTML document. Components can be:
+\begin{enumerate}
+    \item Sidebar -- a pane displayed at the side of the browser window, next to the web page
+    \item Popup -- a dialogue that is associated with a toolbar button or address bar button
+    \item Option page -- a page that enables preferences that user can change
+\end{enumerate}
+
+Every component is defined with its own HTML document and a point to it using specific property in the manifest file. Such HTML document can include both CSS and JavaScript files. JavaScript can use all privileged WebExtension APIs as background scripts (Section \ref{text:backgroundScripts}) and they can even directly access variables in the background page using a special method \textit{runtime.getBackgroundPage()}. \cite{extensionAnatomy}
+
+\subsection{Web--Accessible Resources}
+Sometimes it is needed to provide resources (images, HTML, CSS, JavaScript, etc.) and make them available to web pages. This problem is solved with web--accessible resources. Resources which are made web--accessible can be referenced by page scripts and content scripts using special URI scheme. \cite{extensionAnatomy}
+
+Note that if a page is made web--accessible, any website may link or redirect to that page. Therefore web--accessible pages should treat any input as if it came from an untrusted source. \cite{extensionWebAccessibleResources}
+
+\subsection{Extension Pages}
+Extension pages are HTML documents in broswer extention that are not attached to some predefined user interface components. Extension pages do not have entry in the manifest file unlike sidebars, popups, or option pages. However, they also get access to the same privileged WebExtension APIs as your background script. \cite{extensionAnatomy}
+
+\section{Native Applications}
+A native application is installed using the underlying operating system's installation machinery. A browser can communicate with the native application via a native messaging mechanism. This enables an extension to exchange messages with the native application installed on the user's computer. Thanks to this mechanism, native applications can provide services to extensions without needing to be reachable over the web. Another feature provided by the native application is that they can enable to access resources that are not accessible through WebExtension APIs, such as hardware. \cite{extensionNativeMessaging}
+
+Along with the native application itself, the developer needs to provide another manifest file called "host manifest" or "app manifest" and install it in a defined location on the user's computer. The host manifest file describes how the browser can connect to the native application. Note, that the extension must also request permission "nativeMessaging" in its manifest file and the native application must include the extension's ID in the "allowed\_extensions" field of the host manifest. \cite{extensionNativeMessaging}
+
+Once both extension manifest and host manifest are correctly set, the extension can exchange messages in JSON format with the native application. The native application receives messages on its standard input and sends them using its standard output. The extension uses a set of functions of the runtime API. \cite{extensionNativeMessaging}
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:extensionAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/native-messaging.png}
+        \caption{Native messaging scheme \cite{extensionNativeMessaging}.}
+    \end{center}
+\end{figure}
+
+\chapter{Implementation}
+The goal of this thesis is to implement a browser extension that will detect encrypted elements on a web page and decrypt them. Developing software is a complex and demanding process and it is not easy to deliver a project that correspondents with stakeholder's expectation. To fulfil all expectation, this thesis will be developed in several iterations.
+
+Each iteration will consist of design, development, testing and review. The iteration will be usually 2 -- 3 weeks long and will result in a prototype. The prototype will be then disgusted with thesis supervisor -- Ing. Libor Polčák, Ph.D.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:extensionAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/developementModel.png}
+        \caption{Software development model.}
+    \end{center}
+\end{figure}
 
 \section{OpenPGP.js Prototype}
 \label{prototype:OpenPGPjs}
+Purpose of the first prototype was in case of this thesis to learn how to develop browser extension. The goal was to implement a simple browser extension that will be able to decrypt image using a hardcoded private key. Ideal library for this task was OpenPGP.js (Section \ref{text:openpgpjs}) and since Firefox browser had troubles to load this library, this prototype was implemented for Google Chrome browser.
 
+\subsection{Design}
+No background script or native application was needed to develop the background script so new script -- called \textit{gnupg\_decryptor.js} and OpenPGP.js library can be loaded as content scripts. Designated schema of web extention can be seen in the figure \ref{img:openpgpAnatomy}. Script \textit{gnupg\_decryptor.js} will detect encrypted image by file suffix in its source URL, downloads it, and tries to decrypt it using OpenPGP.js library. Once the content is decrypted, \textit{gnupg\_decryptor.js} will create a new URL pointing to the decrypted image and replace the source URL of \textit{img} element on web page thus displaying the decrypted image to a user. Icon, that represents the extension, was taken from The GNU Privacy Guard \cite{GnuPG}.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:openpgpAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/prototype-openpgpjs.png}
+        \caption{Structure of the OpenPGP.js prototype.}
+    \end{center}
+\end{figure}
+
+\subsection{Implementation}
+Since some parts of this prototype will serve as the foundation stone for next development, special care was taken for reusability of useful functions as well as preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that schema does not shows communication between objects, as usually sequence diagram does, but it shows communication between content scripts).
+\begin{figure}[H]
+    \begin{center}
+        \label{img:openpgp-sequence}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/openpgp-sequence.png}
+        \caption{Communication between content scripts of OpenPGP.js prototype.}
+    \end{center}
+\end{figure}
+
+
+\subsection{Review}
+The implemented prototype was able to detect images on web page by their source URL and then decrypt them using the OpenPGPjs library. Prototype was able to use only hardcoded keys and could not access user's key ring on his computer. Prototype did not need any background scripts nor native application. The only broswer where was implemented extention operational was Google Chrome.
+
+Some functions implemented in this prototype will be included in future prototypes and maybe in final product of this thesis. The main benefit from first iteration were implemented test pages, encrypted images, generated keypairs and experience with web extention developement.
+
+\section{GnuPG\_Decryptor Prototype}
+\label{prototype:GnuPG_Decryptor}
+Hardcoded keys were one of the biggest problems of the previous prototype. A new prototype should have access to users key ring. In order to access it, it will be necessary to implement a native application that will be able to communicate with gpg application. With the native application, OpenPGP.js library will no longer be necessary and all decryption tasks will handle gpg itself.
+
+\subsection{Design}
+Content script (\textit{gnupg\_decryptor.js}) will start the communication with background script. Background script will serve only as an intermediator and will resend messages from content script to the native application. The native application will be implemented in Python language and will communicate with gpg using \textit{subprocess} library. Since user must provide passphrase to private key, native application will have user interface as well. User interface will be implemented using \textit{tkinter} library. All used Python libraries are showned on the figure \ref{img:gnupg_decryptorAnatomy}.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:gnupg_decryptorAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/prototype-GnuPG_Decryptor.png}
+        \caption{Anatomy of the GnuPG\_Decryptor prototype.}
+    \end{center}
+\end{figure}
+
+Decoded content will be sent to background script and it will resend it to content script. The content script will then replace encrypted data with decrypted data the same way as in OpenPGP.js prototype (Section \ref{prototype:OpenPGPjs}).
+
+Messages must be in JSON format. All messages will have a mandatory field \textit{type} that will describe the type of message. In this prototype, supported types will be \textit{decryptResponse, decryptRequest, and debug}. A message with type \textit{decryptRequest} will have mandatory fields \textit{messageId} containing the ID of an encrypted element on a web page, \textit{data} containing encrypted data, and \textit{encoding} specifying which encoding was used to encode the content of field \textit{data}. A message of type \textit{decryptResponse} will have mandatory fields \textit{success} specifing if the decryption was sucesful, \textit{data} containing base64 string with decrypted content (or an empty string if failed),  \textit{message} containing an error message if decryption failed (or an empty string on success), and \textit{messageId} containing the ID of \textit{decryptRequest} message to which the response relates.
+
+\subsection{Implementation}
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:openpgp-sequence}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/sequence-gnupg_decryptor.png}
+        \caption{Communication between web extension, native application, and GnuPG application.}
+    \end{center}
+\end{figure}
+
+
+\subsection{Review}
+
+\section{Future Development}
 
 \chapter{Conclusion}
