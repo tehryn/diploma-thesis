@@ -345,7 +345,7 @@ No background script or native application was needed to develop the background 
 \end{figure}
 
 \subsection{Implementation}
-Since some parts of this prototype will serve as the foundation stone for next development, special care was taken for reusability of useful functions as well as preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that schema does not shows communication between objects, as usually sequence diagram does, but it shows communication between content scripts).
+Since some parts of this prototype will serve as the foundation stone for next development, special care was taken for reusability of useful functions as well as preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that schema does not show communication between objects, as usually sequence diagram does, but it shows communication between content scripts).
 \begin{figure}[H]
     \begin{center}
         \label{img:openpgp-sequence}
@@ -356,13 +356,13 @@ Since some parts of this prototype will serve as the foundation stone for next d
 
 
 \subsection{Review}
-The implemented prototype was able to detect images on web page by their source URL and then decrypt them using the OpenPGPjs library. Prototype was able to use only hardcoded keys and could not access user's key ring on his computer. Prototype did not need any background scripts nor native application. The only broswer where was implemented extention operational was Google Chrome.
+The implemented prototype was able to detect images on web page by their source URL and then decrypt them using the OpenPGPjs library. Prototype was able to use only hardcoded keys and could not access user's keyring on his computer. Prototype did not need any background scripts nor native application. The only broswer where was implemented extention operational was Google Chrome.
 
 Some functions implemented in this prototype will be included in future prototypes and maybe in final product of this thesis. The main benefit from first iteration were implemented test pages, encrypted images, generated keypairs and experience with web extention developement.
 
 \section{GnuPG\_Decryptor Prototype}
 \label{prototype:GnuPG_Decryptor}
-Hardcoded keys were one of the biggest problems of the previous prototype. A new prototype should have access to users key ring. In order to access it, it will be necessary to implement a native application that will be able to communicate with gpg application. With the native application, OpenPGP.js library will no longer be necessary and all decryption tasks will handle gpg itself.
+Hardcoded keys were one of the biggest problems of the previous prototype. A new prototype should have access to users keyring. In order to access it, it will be necessary to implement a native application that will be able to communicate with gpg application. With the native application, OpenPGP.js library will no longer be necessary and all decryption tasks will handle gpg itself.
 
 \subsection{Design}
 Content script (\textit{gnupg\_decryptor.js}) will start the communication with background script. Background script will serve only as an intermediator and will resend messages from content script to the native application. The native application will be implemented in Python language and will communicate with gpg using \textit{subprocess} library. Since user must provide passphrase to private key, native application will have user interface as well. User interface will be implemented using \textit{tkinter} library. All used Python libraries are showned on the figure \ref{img:gnupg_decryptorAnatomy}.
@@ -377,21 +377,66 @@ Content script (\textit{gnupg\_decryptor.js}) will start the communication with 
 
 Decoded content will be sent to background script and it will resend it to content script. The content script will then replace encrypted data with decrypted data the same way as in OpenPGP.js prototype (Section \ref{prototype:OpenPGPjs}).
 
-Messages must be in JSON format. All messages will have a mandatory field \textit{type} that will describe the type of message. In this prototype, supported types will be \textit{decryptResponse, decryptRequest, and debug}. A message with type \textit{decryptRequest} will have mandatory fields \textit{messageId} containing the ID of an encrypted element on a web page, \textit{data} containing encrypted data, and \textit{encoding} specifying which encoding was used to encode the content of field \textit{data}. A message of type \textit{decryptResponse} will have mandatory fields \textit{success} specifing if the decryption was sucesful, \textit{data} containing base64 string with decrypted content (or an empty string if failed),  \textit{message} containing an error message if decryption failed (or an empty string on success), and \textit{messageId} containing the ID of \textit{decryptRequest} message to which the response relates.
+Messages must be in JSON format. All messages will have a mandatory field \textit{type} that will describe the type of message. In this prototype, supported types will be \textit{decryptResponse, decryptRequest, and debug}. A message with type \textit{decryptRequest} will have mandatory fields \textit{messageId} containing the ID of an encrypted element on a web page, \textit{data} containing encrypted data, and \textit{encoding} specifying which encoding was used to encode the content of field \textit{data}. A message of type \textit{decryptResponse} will have mandatory fields \textit{success} specifing if the decryption was successful, \textit{data} containing base64 string with decrypted content (or an empty string if failed),  \textit{message} containing an error message if decryption failed (or an empty string on success), and \textit{messageId} containing the ID of \textit{decryptRequest} message to which the response relates.
 
 \subsection{Implementation}
+Purpose of this prototype was the implementation of a messaging system that will be used in future development. The messaging system simplifies debugging of a native application by supporting debug messages and the system is extensible and reusable although the system is still incomplete.
+
+The native application was implemented as simple as possible. Application has two dialogues to enter the passwords -- password for sudo to access user's keyring and for a passphrase to decrypt the private key. The application does support decryption using only one encrypted key and does not resolve errors reported by sudo or gpg itself. Simplified schema of the implemented prototype can be seen on the figure \ref{img:gnupg_decryptor-sequence} (Note that schema does not show communication between objects, as usually sequence diagram does, but it shows communication between content script, background script, native application and GnuPG application).
 
 \begin{figure}[H]
     \begin{center}
-        \label{img:openpgp-sequence}
+        \label{img:gnupg_decryptor-sequence}
         \includegraphics[width=1.0\textwidth]{obrazky-figures/sequence-gnupg_decryptor.png}
         \caption{Communication between web extension, native application, and GnuPG application.}
     \end{center}
 \end{figure}
 
-
 \subsection{Review}
+The implemented prototype can access to a certain extent user's keyring. Using a messaging system, the extension is able to exchange data between gpg application installed on the user's computer and web browser thus enabling usage of gpg for decryption. Through messaging system is incomplete, the GnuPG\_Decryptor prototype offers sufficient basis for future development.
+
+Future prototypes must complete messaging system -- there is missing functionality dealing with the limited size of messages and maximum size of exchanged content. The user interface provided by the native application is also insufficient and must be improved in order to use multiple keys for decryption and do not require sudo password if not necessary. The native application also needs to deal with errors occurs during data decryption and somehow informs the user about the error.
 
 \section{Future Development}
+The anatomy of the web browser extension will only differ slightly from the anatomy of the GnuPG\_Decryptor prototype (Figure \ref{img:gnupg_decryptorAnatomy}). Only icons and used Python libraries will be changed. But bigger changes are expected in these areas:
+\begin{itemize}
+    \item Messaging system
+    \item Native application
+    \item Content script
+\end{itemize}
 
-\chapter{Conclusion}
+\subsection{Messaging System}
+The messaging system will be extended to support the limited size of a single message (1\,MB) and maximum size of transmitted content (4\,GB) between the native application and the background script. It is also expected that new types of messages will be created.
+
+To ensure that maximum size of transmitted content will not be exceeded, both the native application and the background script will be responsible to keep information about the size of transmitted content and when they reach critical value, they inform each other that it is needed to re-establish a new connection.
+
+To support the limited size of a single message, all types of messages will have mandatory elements \textit{messageId} and \textit{lastBlock}. If a message would exceed the maximum size, its data will be split into blocks and each block will be sent with separately with the same \textit{messageId}. The field \textit{lastBlock} will be set to value 1 in case of the last block otherwise to 0.
+
+\subsection{Native application}
+The native application must be able to handle any error occurred during a data decryption process, usage of sudo, incorrect passphrase entry, etc. The native application will also implement the user interface.
+
+The user interface will support multiple password entries for different private keys. Providing sudo password will not be mandatory anymore since a user might not have permission to use it. Draft of a simple sufficient user interface is shown on the figure \ref{img:userInterfaceDesign}.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:userInterfaceDesign}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/UI-design.png}
+        \caption{Draft of a possible user interface.}
+    \end{center}
+\end{figure}
+
+\subsection{Content Script}
+Currently, the content script can only detect encrypted images. Detection of other encrypted elements (text, videos, div backgrounds, etc.) must be implemented. It is also necessary to detect any changes on a web page (for example received data by XHR API, Fetch API, or Push
+API).
+
+Encrypted files (images, videos, etc.) will be detected by file suffixes \textit{.gpg} and \textit{.asc}. The encrypted text will be detected by "armoured" text prefix:
+\begin{verbatim}
+-----BEGIN PGP MESSAGE-----
+\end{verbatim}
+
+Changes on web pages will be detected using \textit{MutationObserver} interface. With this interface, it will be possible to detect any changes made to the DOM tree.
+
+\chapter{Conclusion} 
+Last implemented prototype is able to use GnuPG application to decrypt encrypted data and to access user's keyring. Yet there are still many things to improve. Current prototype lacks abilities to detect all of the encrypted elements on a web page, to detect any changes in DOM tree, to access and use multiple private keys for data encryption. Provided user interface demands sudo password and passphrase to decrypt private key, the native application is unable to handle any errors.
+
+Individual deficiencies will be fixed or implemented in one of the future prototypes. With every prototype implemented, this thesis will be closer to completion. Since most of the current problems have designated solutions, nothing prevent further development.
