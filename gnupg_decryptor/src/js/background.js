@@ -8,18 +8,23 @@ var browser = browser || chrome;
 On startup, connect to the "ping_pong" app.
 */
 let port = browser.runtime.connectNative("GnuPG_Decryptor");
-
+//console.log( port );
 /*
 Listen for messages from the app.
 */
+receiverId = null;
 port.onMessage.addListener(
     ( message ) => {
-        console.log( message );
+        //console.log( message );
         if ( message.type === 'decryptResponse' ){
-            browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                // console.log( tabs );
-                browser.tabs.sendMessage( tabs[0].id, message, null );
-            });
+            //browser.tabs.query( {active: true, currentWindow: true}, function(tabs) {
+            //    console.log( tabs );
+            //    console.log( browser.tabs );
+            browser.tabs.sendMessage( receiverId, message, null );
+            //});
+        }
+        else if ( message.type === 'debug' ) {
+            console.log( message.data );
         }
         //browser.runtime.sendMessage( 'GnuPG_Decryptor@stud.fit.vutbr.cz', { 'data' : message.data, 'encoding' : message.encoding, type : 'decryptResponse', success : message.success }, null );
     }
@@ -27,10 +32,11 @@ port.onMessage.addListener(
 
 browser.runtime.onMessage.addListener(
     function( message, sender, sendResponse ) {
-        // console.log( message );
-        // console.log( sender );
+        //console.log( message );
+        //console.log( sender );
+        receiverId = sender.tab.id;
         if ( message.type === "decryptRequest" ) {
-            port.postMessage( { 'data' : message.data, 'encoding' : message.encoding, 'messageId' : message.messageId, 'type' : 'decryptRequest' } );
+            port.postMessage( message );
         }
     }
 );
