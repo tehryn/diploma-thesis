@@ -3,11 +3,13 @@
 /* jshint browser: true */
 /* jshint -W080 */
 
-var browser = browser || chrome;
-/*
-On startup, connect to the "ping_pong" app.
-*/
-let port = browser.runtime.connectNative("GnuPG_Decryptor");
+var browser     = browser || chrome;
+var keys        = {};
+var sizeCounter = 0;
+
+const MAXIMUM_SIZE = 4 * 1024 * 1024 * 1024;
+
+let port = browser.runtime.connectNative( "GnuPG_Decryptor" );
 //console.log( port );
 /*
 Listen for messages from the app.
@@ -24,7 +26,14 @@ port.onMessage.addListener(
             //});
         }
         else if ( message.type === 'debug' ) {
-            console.log( message.data );
+            console.log( message );
+        }
+        else if ( message.type === 'updateKeysRequest' ) {
+            keys = message.keys;
+        }
+        else if ( message.type === 'getKeysRequest' ) {
+            response = { 'type' : 'getKeysResponse', 'keys' : keys };
+            port.postMessage( response );
         }
         //browser.runtime.sendMessage( 'GnuPG_Decryptor@stud.fit.vutbr.cz', { 'data' : message.data, 'encoding' : message.encoding, type : 'decryptResponse', success : message.success }, null );
     }
@@ -38,5 +47,11 @@ browser.runtime.onMessage.addListener(
         if ( message.type === "decryptRequest" ) {
             port.postMessage( message );
         }
+    }
+);
+
+browser.browserAction.onClicked.addListener(
+    function() {
+        port.postMessage( { 'type' : 'displayWindow' } );
     }
 );

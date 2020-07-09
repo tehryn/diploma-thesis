@@ -6,9 +6,10 @@
 const encoder = new TextEncoder();
 
 var browser = browser || chrome;
-let MAX_MESSAGE_SIZE = 750 * 1024;
+let MAX_MESSAGE_SIZE = 3 * 1024 * 1024 * 1024;
 let elemId  = 0;
 let blocks  = {};
+
 
 document.body.style.border = "5px solid blue";
 browser.runtime.onMessage.addListener(
@@ -61,12 +62,35 @@ function getId() {
     while ( document.getElementById( newId ) ) {
         newId = 'GnuPG_DecryptorElemId-' + elemId++;
     }
-    
+
     return newId;
 }
 
 function main() {
+    let mutObservConfig = { attributes : true, childList : true, subtree : true };
+    let mutObserver = new MutationObserver(
+        function( mutatuinList, observer ) {
+            for ( let mutation of mutatuinList ) {
+                console.log( mutation );
+                let elements = getElements( mutation.target );
+                parseElements( elements );
+            }
+        }
+    );
+    mutObserver.observe( document.documentElement, mutObservConfig );
     let elements = getElements( document.documentElement );
+    parseElements( elements );
+}
+
+function mergeArrayBuffers( arr1, arr2, arr3 ) {
+    let result = new Uint8Array( arr1.byteLength + arr2.byteLength + arr3.byteLength );
+    result.set( new Uint8Array( arr1 ), 0 );
+    result.set( new Uint8Array( arr2 ), arr1.byteLength );
+    result.set( new Uint8Array( arr3 ), arr1.byteLength + arr2.byteLength );
+    return result.buffer;
+}
+
+function parseElements( elements ) {
     elements.forEach(
         function( elem, index ) {
             let id = elem.data.id;
@@ -78,7 +102,7 @@ function main() {
                 img = elem.data;
                 // We are working with encrypted files
                 let reader = new FileReader();
-                
+
                 // reading the file
                 reader.onload = function( event ) {
                     console.log( 'Element loaded, preparing to send: ' + id );
@@ -86,7 +110,7 @@ function main() {
                     let message   = { 'data' : encrypted, 'type' : 'decryptRequest', encoding : 'base64', messageId : id };
                     sendMessage( message );
                 };
-                
+
                 // getting the file as blob
                 getFile( img.src, 'blob' ).then(
                     function( data ) {
@@ -102,14 +126,6 @@ function main() {
     );
 }
 
-function mergeArrayBuffers( arr1, arr2, arr3 ) {
-    let result = new Uint8Array( arr1.byteLength + arr2.byteLength + arr3.byteLength );
-    result.set( new Uint8Array( arr1 ), 0 );
-    result.set( new Uint8Array( arr2 ), arr1.byteLength );
-    result.set( new Uint8Array( arr3 ), arr1.byteLength + arr2.byteLength );
-    return result.buffer;
-}
-
 function getElements( root ) {
     let arr = [];
     let iterator = document.createNodeIterator( root, NodeFilter.SHOW_ELEMENT );
@@ -121,11 +137,11 @@ function getElements( root ) {
         if ( node.hasAttribute( 'src' ) && ( node.src.toLowerCase().endsWith( '.gpg' ) || node.src.toLowerCase().endsWith( '.asc' ) ) ) {
             arr.push( { 'data' : node, 'type' : 'file' } );
         }
-        
+
         if ( node.children.length == 0 && node.innerHTML.trim().match( armouredRegex ) ) {
             arr.push( { 'data' : node, 'type' : 'text' } );
         }
-        
+
         node = iterator.nextNode();
     }
     console.log( arr );
@@ -197,17 +213,17 @@ function readAllChunks(readableStream) {
 }
 
 function sendMessage( message ) {
-    console.log( 'Sending:' + message.messageId );
+    //console.log( 'Sending:' + message.messageId );
     if ( message.type === 'decryptRequest' ) {
         let dataSize   = message.data.length;
-        console.log( 'Total size of data (curr/max): ' + dataSize + '/' + MAX_MESSAGE_SIZE );
+        //console.log( 'Total size of data (curr/max): ' + dataSize + '/' + MAX_MESSAGE_SIZE );
         if ( dataSize > MAX_MESSAGE_SIZE ) {
-            console.log( 'Spliting string...' );
+        //    console.log( 'Spliting string...' );
             let dataBlocks = splitString( message.data );
-            console.log( 'Data blocks count: ' + dataBlocks.length );
+        //    console.log( 'Data blocks count: ' + dataBlocks.length );
             dataBlocks.forEach(
                 function( data, index ) {
-                    console.log( 'Part of data (size/length): ' + [ data.length, ( new TextEncoder().encode( data ) ).length ] );
+                    //console.log( 'Part of data (size/length): ' + [ data.length, ( new TextEncoder().encode( data ) ).length ] );
                     message.data = data;
                     message.lastBlock = ( index + 1 == dataBlocks.length ) ? 1 : 0;
                     browser.runtime.sendMessage( message );
