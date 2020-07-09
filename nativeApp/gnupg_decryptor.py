@@ -151,11 +151,27 @@ class GnuPG_Decryptor:
                 keys = [ key for key in keys if key in self._passwords ]
 
                 if ( keys ):
-                    process = subprocess.Popen( [ 'sudo', '-Sk' ,'gpg', '--passphrase', self._passwords[ keys[0] ], '--decrypt' ] ,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
-                    password = '' if self._sudo is None else self._sudo + '\n'
-                    decrypted, err = process.communicate( password.encode() + rawData )
+                    args     = []
+                    sudoPass = ''
+                    keyPass  = self._passwords[ keys[0] ]
+
+                    if ( not self._sudo is None ):
+                        args.append( 'sudo' )
+                        args.append( '-Sk' )
+                        sudoPass = self._sudo + '\n'
+
+                    args.append( 'gpg' )
+                    args.append( '--quiet' )
+
+                    if ( keyPass ):
+                        args.append( '--passphrase' )
+                        args.append( keyPass )
+
+                    args.append( '--decrypt' )
+
+                    process = subprocess.Popen( args ,stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+                    decrypted, err = process.communicate( sudoPass.encode() + rawData )
                     retcode = process.returncode
-                    self.debug( "Error:" + str( err ) )
 
                     if ( retcode != 0 ):
                         errorMessage = 'Unable to decrypt data: ' + err.decode()
