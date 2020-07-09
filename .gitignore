@@ -3,7 +3,6 @@ passff-host
 pylint.rc
 devel
 text/text.odt
-.gpg
 *.mp3
 *.mp4
 *pycache*
