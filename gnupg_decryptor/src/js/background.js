@@ -17,13 +17,9 @@ Listen for messages from the app.
 receiverId = null;
 port.onMessage.addListener(
     ( message ) => {
-        //console.log( message );
         if ( message.type === 'decryptResponse' ){
-            //browser.tabs.query( {active: true, currentWindow: true}, function(tabs) {
-            //    console.log( tabs );
-            //    console.log( browser.tabs );
-            browser.tabs.sendMessage( receiverId, message, null );
-            //});
+            console.log( message );
+            browser.tabs.sendMessage( message.tabId, message, null );
         }
         else if ( message.type === 'debug' ) {
             console.log( message );
@@ -41,11 +37,13 @@ port.onMessage.addListener(
 
 browser.runtime.onMessage.addListener(
     function( message, sender, sendResponse ) {
-        //console.log( message );
+        console.log( message );
         //console.log( sender );
-        receiverId = sender.tab.id;
         if ( message.type === "decryptRequest" ) {
             port.postMessage( message );
+        }
+        else if ( message.type === "tabIdRequest" ) {
+            browser.tabs.sendMessage( sender.tab.id, { 'type' : 'tabIdResponse', 'tabId' : sender.tab.id }, null );
         }
     }
 );

@@ -1,9 +1,9 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QDesktopWidget, QLabel, QTableWidget, QTableWidgetItem, QBoxLayout, QLineEdit, QMainWindow, QCheckBox, QPushButton
+from os import getcwd
+from PyQt5.QtWidgets import QWidget, QLabel, QBoxLayout, QLineEdit, QCheckBox, QPushButton, QDesktopWidget, QFileDialog
 from PyQt5.QtGui import QIcon, QFont
 
 class GnuPG_Decryptor_GUI( QWidget ):
-    def __init__( self, app, initKeys = [] ):
+    def __init__( self, app, initKeys ):
         super().__init__()
         self._backend = app
         self._sudo    = None
@@ -58,14 +58,14 @@ class KeyList( QWidget ):
     def initUI( self ):
         font = QFont()
         font.setBold( True )
-        self._label = QLabel( 'Available Keys', self )
-        self._label.setFont( font )
-        self._label.setMaximumHeight( KeyItem.itemHeight() )
+        header = QLabel( 'Available Keys', self )
+        header.setFont( font )
+        header.setMaximumHeight( KeyItem.itemHeight() )
         self._layout = QBoxLayout( QBoxLayout.TopToBottom, parent = self )
         self._layout.setSpacing(5)
         self._layout.setContentsMargins(0,0,0,0)
         self.setLayout( self._layout )
-        self._layout.addWidget( self._label )
+        self._layout.addWidget( header )
 
         self._button = QPushButton( "Confirm" )
         self._button.setMaximumWidth( 80 )
@@ -165,8 +165,8 @@ class Refresher( QWidget ):
     def initUI( self ):
         font = QFont()
         font.setBold( True )
-        self._label = QLabel( 'Refresh Keys', self )
-        self._label.setFont( font )
+        header = QLabel( 'Refresh Keys', self )
+        header.setFont( font )
 
         self._sudoWidget = QWidget( self )
         self._sudoWidget.hide()
@@ -179,7 +179,7 @@ class Refresher( QWidget ):
         self._homeWidget.setLayout( homeLayout )
 
         self._sudo = QLineEdit( self._sudoWidget )
-        self._sudo.setMaximumWidth( 300 )
+        self._sudo.setMinimumWidth( 300 )
         self._sudo.setEchoMode( QLineEdit.Password )
 
         sudoLabel = QLabel( "sudo:  ", parent = self._sudoWidget )
@@ -188,14 +188,20 @@ class Refresher( QWidget ):
         sudoLayout.addStretch( 1 )
         sudoLayout.setContentsMargins( 0, 0, 0, 0)
 
-        self._home = QLineEdit( self._homeWidget )
-        self._home.setMaximumWidth( 300 )
+        homeLabel  = QLabel( "home:",  parent = self._homeWidget )
+        self._homedirLabel = QLineEdit( parent = self._homeWidget )
+        self._homedirLabel.setReadOnly( True )
+        self._homedirLabel.setMinimumWidth( 300 )
+        self._homedirLabel.setText( getcwd() )
+        selectHome = QPushButton( "Change homedir" )
+        selectHome.clicked.connect( self.selectDir )
+        selectHome.setContentsMargins( 0, 0, 0, 0 )
 
-        homeLabel = QLabel( "home:", parent = self._homeWidget )
         homeLayout.addWidget( homeLabel )
-        homeLayout.addWidget( self._home )
+        homeLayout.addWidget( self._homedirLabel )
+        homeLayout.addWidget( selectHome )
         homeLayout.addStretch( 1 )
-        homeLayout.setContentsMargins( 0, 0, 0, 0)
+        homeLayout.setContentsMargins( 0, 0, 0, 0 )
 
 
         self._sudoChck  = QCheckBox( 'Use sudo to access private keys', parent = self )
@@ -211,7 +217,7 @@ class Refresher( QWidget ):
         self._layout.setSpacing(5)
         self._layout.setContentsMargins( 0, 0, 0, 0 )
         self.setLayout( self._layout )
-        self._layout.addWidget( self._label )
+        self._layout.addWidget( header )
         self._layout.addWidget( self._sudoChck )
         self._layout.addWidget( self._homeChck )
         self._layout.addWidget( self._sudoWidget )
@@ -223,13 +229,18 @@ class Refresher( QWidget ):
         useSudo = self._sudoChck.isChecked()
         sudo    = self._sudo.text() if useSudo else None
         useHome = self._homeChck.isChecked()
-        home    = self._home.text() if useHome else None
+        home    = self._homedirLabel.text() if useHome else None
         message = {
             'action' : 'refresh',
             'sudo' : { 'use' : useSudo, 'password' : sudo },
             'home' : { 'use' : useHome, 'homedir'  : home }
         }
         self._parent.notifyBackend( message )
+
+    def selectDir( self ):
+        homedir = QFileDialog.getExistingDirectory( self, "Select GPG Homedir", self._homedirLabel.text(), QFileDialog.ReadOnly )
+        if ( homedir ):
+            self._homedirLabel.setText( homedir )
 
     def toggleChck( self ):
         if ( self._sudoChck.isChecked() ):

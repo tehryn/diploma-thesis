@@ -7,11 +7,12 @@ const encoder = new TextEncoder();
 
 var browser = browser || chrome;
 let MAX_MESSAGE_SIZE = 3 * 1024 * 1024 * 1024;
-let elemId  = 0;
-let blocks  = {};
+let elemId   = 0;
+let blocks   = {};
+let cache    = {};
+let tabId    = undefined;
+let types    = {};
 
-
-document.body.style.border = "5px solid blue";
 browser.runtime.onMessage.addListener(
     function( message, sender, sendResponse ) {
         //console.log( message );
@@ -24,38 +25,67 @@ browser.runtime.onMessage.addListener(
                     else {
                         blocks[ message.messageId ] += message.data;
                     }
-                    console.log( blocks.messageId );
+                    //console.log( blocks.messageId );
                 }
                 else {
                     if ( typeof blocks[ message.messageId ] !== 'undefined' ) {
                         message.data = blocks[ message.messageId ] + message.data;
                     }
-                    if ( message.mimeType.startsWith( 'text' ) ) {
-                        let elem = document.getElementById( message.messageId );
+                    let elem = document.getElementById( message.messageId );
+
+                    if ( types[ message.messageId ] == 'text' ) {
+                        text = elem.innerHTML.trim();
+                        hash = stringToHash( text );
                         if ( message.encoding == 'base64' ) {
-                            elem.innerHTML = window.atob( message.data );
+                            cache[ hash ].data =  decodeURIComponent(escape(window.atob( message.data )));
                         }
                         else {
-                            elem.innerHTML = message.data;
+                            cache[ hash ].data = message.data;
                         }
+                        cache[ hash ].status = 'decrypted';
+                        cache[ hash ].elements.forEach(
+                            function ( id, index ) {
+                                elem = document.getElementById( id );
+                                elem.innerHTML = cache[ hash ].data;
+                            }
+                        );
                     }
-                    else {
-                        let blob  = new Blob( [base64ToArrayBuffer( message.data )], { type : message.mimeType } );
+                    else if ( types[ message.messageId ] == 'file' ) {
+                        let blob  = new Blob( [ base64ToArrayBuffer( message.data ) ], { type : message.mimeType } );
                         let url = URL.createObjectURL( blob );
-                        let elem = document.getElementById( message.messageId );
-                        elem.src = url;
-                        if ( elem.parentNode && ( elem.parentNode.tagName === 'VIDEO' || elem.parentNode.tagName === 'AUDIO' ) ) {
-                            elem.parentNode.load();
-                        }
+                        cache[ elem.src ].url    = url;
+                        cache[ elem.src ].status = 'decrypted';
+                        cache[ elem.src ].elements.forEach(
+                            function ( id, index ) {
+                                elem = document.getElementById( id );
+                                elem.src = url;
+                                if ( elem.parentNode && ( elem.parentNode.tagName === 'VIDEO' || elem.parentNode.tagName === 'AUDIO' ) ) {
+                                    elem.parentNode.load();
+                                }
+                            }
+                        );
                     }
                 }
             }
         }
+        if ( message.type === "tabIdResponse" ) {
+            tabId = message.tabId;
+            console.log( 'New TabId: ' + tabId );
+        }
     }
 );
 
-
-main();
+setTabId();
+setTimeout( checkTabId, 100 );
+function checkTabId() {
+    if ( tabId !== undefined ) {
+        main();
+    }
+    else {
+        setTabId();
+        setTimeout( checkTabId, 100 );
+    }
+}
 
 function getId() {
     let newId = 'GnuPG_DecryptorElemId-' + elemId++;
@@ -66,14 +96,20 @@ function getId() {
     return newId;
 }
 
+function setTabId() {
+    sendMessage( { 'type' : 'tabIdRequest' } );
+}
+
 function main() {
-    let mutObservConfig = { attributes : true, childList : true, subtree : true };
+    let mutObservConfig = { attributes : true, attributeFilter : [ 'src' ], childList : true, subtree : true, characterDataOldValue : true };
     let mutObserver = new MutationObserver(
         function( mutatuinList, observer ) {
             for ( let mutation of mutatuinList ) {
-                console.log( mutation );
-                let elements = getElements( mutation.target );
-                parseElements( elements );
+                console.log( cache );
+                if ( mutation.type !== 'attributes1' ) {
+                    let elements = getElements( mutation.target );
+                    parseElements( elements );
+                }
             }
         }
     );
@@ -99,29 +135,57 @@ function parseElements( elements ) {
             }
             console.log( 'Parsing elemnt: ' + id );
             if ( elem.type === 'file' ) {
-                img = elem.data;
-                // We are working with encrypted files
-                let reader = new FileReader();
+                if ( cache[ elem.data.src ] === undefined ) {
+                    file = elem.data;
+                    cache[ elem.data.src ] = { 'status' : 'creatingRequset', 'type' : 'file', 'url' : elem.data.src, 'elements' : [ id ] };
+                    // We are working with encrypted files
+                    let reader = new FileReader();
 
-                // reading the file
-                reader.onload = function( event ) {
-                    console.log( 'Element loaded, preparing to send: ' + id );
-                    let encrypted = arrayBufferToBase64( event.target.result );
-                    let message   = { 'data' : encrypted, 'type' : 'decryptRequest', encoding : 'base64', messageId : id };
-                    sendMessage( message );
-                };
+                    // reading the file
+                    reader.onload = function( event ) {
+                        let encrypted = arrayBufferToBase64( event.target.result );
+                        let message   = { 'data' : encrypted, 'type' : 'decryptRequest', encoding : 'base64', messageId : id };
+                        types[ id ] = 'file';
+                        sendMessage( message );
+                        cache[ elem.data.src ].status = 'decrypting';
+                        console.log( 'Element ' + id + ' sent.' );
+                    };
 
-                // getting the file as blob
-                getFile( img.src, 'blob' ).then(
-                    function( data ) {
-                        reader.readAsArrayBuffer( data );
+                    // getting the file as blob
+                    getFile( elem.data.preParsedData ? elem.data.preParsedData : file.src, 'blob' ).then(
+                        function( data ) {
+                            reader.readAsArrayBuffer( data );
+                        }
+                    );
+                }
+                else {
+                    if ( cache[ elem.data.src ].status === 'decrypted' ) {
+                        elem.data.src = cache[ elem.data.src ].url;
                     }
-                );
+                    else {
+                        cache[ elem.data.src ].elements.push( id );
+                    }
+                }
             }
             else if ( elem.type == 'text' ) {
-                let message   = { 'data' : elem.data.innerHTML.trim(), 'type' : 'decryptRequest', encoding : 'ascii', messageId : id };
-                sendMessage( message );
+                data = elem.data.preParsedData ? elem.data.preParsedData : elem.data.innerHTML.trim();
+                hash = stringToHash( data );
+                if ( cache[ hash ] === undefined ) {
+                    types[ id ] = 'text';
+                    cache[ hash ] = { 'status' : 'decryptRquest', 'type' : 'text', 'data' : data, 'elements' : [ id ] };
+                    sendMessage( { 'data' : data, 'type' : 'decryptRequest', encoding : 'ascii', messageId : id } );
+                    console.log( 'Element ' + id + ' sent.' );
+                }
+                else {
+                    if ( cache[ hash ].status === 'decrypted' ) {
+                        elem.data.innerHTML = cache[ hash ].data;
+                    }
+                    else {
+                        cache[ hash ].elements.push( id );
+                    }
+                }
             }
+
         }
     );
 }
@@ -134,12 +198,13 @@ function getElements( root ) {
     let armouredRegex = new RegExp( '^-----BEGIN PGP MESSAGE-----[aA-zZ|0-9|\\/+=\\r\\n]+-----END PGP MESSAGE-----$' );
 
     while ( node ) {
+        text = node.innerHTML.trim();
         if ( node.hasAttribute( 'src' ) && ( node.src.toLowerCase().endsWith( '.gpg' ) || node.src.toLowerCase().endsWith( '.asc' ) ) ) {
-            arr.push( { 'data' : node, 'type' : 'file' } );
+            arr.push( { 'data' : node, 'type' : 'file', 'preParsedData' : null } );
         }
 
-        if ( node.children.length == 0 && node.innerHTML.trim().match( armouredRegex ) ) {
-            arr.push( { 'data' : node, 'type' : 'text' } );
+        if ( node.children.length == 0 && text.startsWith( '-----BEGIN PGP MESSAGE-----' ) && text.match( armouredRegex ) ) {
+            arr.push( { 'data' : node, 'type' : 'text', 'preParsedData' : text } );
         }
 
         node = iterator.nextNode();
@@ -214,6 +279,7 @@ function readAllChunks(readableStream) {
 
 function sendMessage( message ) {
     //console.log( 'Sending:' + message.messageId );
+    message.tabId = tabId;
     if ( message.type === 'decryptRequest' ) {
         let dataSize   = message.data.length;
         //console.log( 'Total size of data (curr/max): ' + dataSize + '/' + MAX_MESSAGE_SIZE );
@@ -248,4 +314,14 @@ function splitString( string ) {
         result.push( string.substring( i * MAX_MESSAGE_SIZE, ( i + 1 ) * MAX_MESSAGE_SIZE ) );
     }
     return result;
+}
+
+function stringToHash( str ) {
+    let hash = 0;
+
+    for ( i = 0; i < str.length; i++ ) {
+        hash = ( ( ( hash << 5 ) - hash ) + str.charCodeAt( i ) ) | 0;
+    }
+
+    return '' + hash;
 }
