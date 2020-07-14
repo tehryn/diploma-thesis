@@ -1,0 +1,1642 @@
+% This file should be replaced with your file with an appendices (headings below are examples only)
+
+% Placing of table of contents of the memory media here should be consulted with a supervisor
+%\chapter{Contents of the included storage media}
+
+%\chapter{Manual}
+
+%\chapter{Configuration file}
+
+%\chapter{Scheme of RelaxNG configuration file}
+
+%\chapter{Poster}
+
+\chapter{How to use this template}
+\label{jak}
+
+This chapter describes individual parts of the template, followed by a brief instructions on how to use it. If you have any questions, comments etc, feel free to email them to \texttt{sablona@fit.vutbr.cz}.
+
+\section*{Template parts description}
+
+Once you extract the template, you will find the following files and directories:
+\begin{DESCRIPTION}
+  \item [bib-styles] Literature styles (see below). 
+  \item [obrazky-figures] Directory for your images. Currently contains \texttt{placeholder.pdf} (a.k.a TODO image -- see below) and image keep-calm.png to demonstrate inserting raster images (you don't submit these images with your thesis). It is advised to use shorter directory name, so that it is only in your chosen language.
+  \item [template-fig] Template images (BUT logo).
+  \item [fitthesis.cls] Template (design definition).
+  \item [Makefile] Makefile used to compile the project, count standard pages etc. (see below).
+  \item [projekt-01-kapitoly-chapters-en.tex] File for Your text (replace it's contents).
+  \item [projekt-20-literatura-bibliography.bib] Reference list (see below).
+  \item [projekt-30-prilohy-appendices-en.tex] File for your appendices (replace it's contents).
+  \item [projekt.tex] Main project file -- definitions of formal parts.
+\end{DESCRIPTION}
+
+The style of literature in the template is from Ing. Radek Pyšný \cite{Pysny}, whose work was improved by prof. Adam Herout, dr. Jaroslav Dytrych and Mr. Karel Hanák to comply with the norm and support all frequently used types of citations. Its documentation can be found in the appendix
+
+Aside from compilation to PDF, the Makefile also offers additional functions:
+\begin{itemize}
+  \item rename files (see below),
+  \item count standard pages,
+  \item run a wave that adds unbreakable spaces,
+  \item compress (zip) the result, ready to be sent to your supervisor and checked (make sure that all the files you've added are included, if not, add them manually).
+\end{itemize}
+
+Keep in mind that the wave is not perfect. You always need to check whether or not there is something inappropriate at the end of a line manually -- see Online language handbook\footnote{Internetová jazyková příručka \url{http://prirucka.ujc.cas.cz/?id=880}}.
+
+Similar rules apply also in English - see eg. article Run Ragged\footnote{Run Ragged\url{https://24ways.org/2013/run-ragged/}}, according to which there should be no prepositions, dash or short words (2--3 letters) at the end of the lines, the two lines following each other should not end with a comma and line break should not be also in the phrases from 2-3 words.
+
+\paragraph {Pay attention to page numbering!} If the table of contents is 2 pages long and the second page contains only \uv{Enclosures} and \uv{List of enclosures} (but there is no enclosure), the page numbering is changed by 1 (table of contents and contents \uv{mismatch}). The same thing happens if the second or third page contains only \uv{References} and there's a chance that this can occur in other situations too. There are multiple solutions to this (from editing the table of contents, setting the page counter all the way to more sophisticated methods). \textbf{Check the page numbering before you submit your thesis!}
+
+\section*{Recommendations for working with the template}
+
+\begin{enumerate}
+  \item \textbf{Make sure you have the latest version of template.} If you have a template from last year, there should be a newer version (updated information, fixed errors etc.) available at the faculty or study advisor web pages.  
+  \item \textbf{Choose a language}, that you want to use for your technical report (czech, slovak or english) and consult your supervisor about your choice (unless it was agreed upon in advance). If your language of choice is not czech, set the respective template parameter in file projekt.tex (e.g.: \verb|document|\verb|class[english]{fitthesis}| and translate the declaration and acknowledgement to english or slovak).
+  \item \textbf{Rename the files.} When you extract the files, there should be a file named projekt.tex. If you compile it, it will create a PDF with technical report named projekt.pdf. If multiple students send their supervisor projekt.pdf to have it checked, they have to rename them. For that reason, it is advised to rename the file so that it contains your login and (if needed, abbreviated) work topic. Avoid using spaces, diacritic and special symbols. An appropriate name for your file can look like this: \uv{xlogin00-Cleaning-and-extraction-of-text.tex}. You can use the included Makefile to rename it: 
+\begin{verbatim}
+make rename NAME=xlogin00-Cleaning-and-extraction-of-text
+\end{verbatim}
+  \item Fill in the required information in file, that was originally named projekt.text, that means type, year (of submission), thesis title, author's name, department (according to specification), supervisor's titles and name, abstract, keywords and other formal requirements.
+  \item Replace the contents of thesis chapters, references and enclosures files with the contents of your technical report. Individual enclosures or thesis chapters can be saved to separate files -- if you choose this approach, it is advised to comply with the file naming convention, and the number will be followed by the chapter title.
+  \item If you don't need enclosures, comment the respective part in projekt.tex and erase everything from the corresponding file or delete it. Don't try to come up with an aimless enclosures just to have something in that file. An appropriate enclosure can be the contents of included memory medium.
+  \item Delete the chapter and attachment files for a language you haven't used (with or without \texttt{-en}).
+  \item Assignment that you download in PDF from FIT IS (link \uv{Thesis assignment}) save to file \texttt{zadani.pdf} and enable its insertion into work by appropriate template parameter (\verb|document|\verb|class[zadani]{fitthesis}|) in \texttt{projekt.tex}.
+  \item If you don't want to print references in color (i cannot recommend this without consulting your supervisor), you'll need to create a second PDF for printing and set the template printing parameter:\\ (\verb|document|\verb|class[english,zadani,print]{fitthesis}|). Colored logo must not be printed in black and white.
+  \item The binder templace where the thesis will be typeset can be generated in faculty IS at specification. Can be enabled for dissertation using the \tt cover \rm parameter in template.
+  \item Don't forget that source files and (both versions) PDF has to be on a CD or other medium included in the technical report.
+\end{enumerate}
+
+\subsection*{Instructions for double-sided printing}
+\begin{itemize}
+\item \textbf{It is advised to consult your supervisor about double-sided printing.}
+\item If you used double-sided printing for your thesis and it's thickness is smaller than the thickness of the binder, it doesn't look too good.
+\item Enabled using the following template parameter:\\ \verb|\document|\verb|class[twoside]{fitthesis}|
+\item After printing a double-sided sheet, make sure that the canon of page construction is in the same position on both pages. Inferior printers with duplex printing unit usually cause a shift by 1--3 mm. This can be solved with some printers. Print the odd pages first, put them back into the same tray and print the even pages.
+\item Leave a blank page after title page, table of contents, references, list of tables, list of appendices and other lists to make sure that the following part starts on an odd page (\texttt{\textbackslash cleardoublepage}).
+\item Check the final result thoroughly.
+\end{itemize}
+
+\subsection*{Paragraph style}
+
+Paragraphs have justified alignment and there are multiple methods for formatting them. In Czech paper literature, a paragraph indentation method is common, where each paragraph of the text have the first line of a paragraph indented by about one to two quads, that is, about two widths of the capital letter M of the base text (always about the same preselected value). In this case, the last line of the previous paragraph and the first line of the following paragraph are not separated by a vertical space. The interleaving between these lines is the same as the interleaving inside the paragraph \cite{fitWeb}.
+
+Another method is indenting paragraphs, which is common for electronic typesetting and for English texts. In this method, the first line of a paragraph is not indented and a vertical space of approximately half of a line is inserted between the paragraphs. Both methods can be used in the thesis, however, the latter method is often more suitable. Methods should not be combined.
+
+One of the above methods is set as the default in the template, the other can be selected by the template parameter \uv{\tt odsaz\rm }.
+
+
+\subsection*{Useful tools} 
+\label{nastroje}
+
+The following list is not a list of all useful tools. If you have experience with a certain tool, feel free to use it. However, if you don't know which tool to choose, consider the ones listed below:
+
+\begin{description}
+	\item[\href{http://miktex.org/download}{MikTeX}] \LaTeX{} for Windows -- a distribution with simple installation and great automated package downloading. MikTeX even has it's own editor, but I highly recommend TeXstudio.
+	\item[\href{http://texstudio.sourceforge.net/}{TeXstudio}] Portable opensource GUI for \LaTeX{}. Ctrl+click switches between source text and PDF. Integrated spell checker\footnote{Spell checker for czech version can be installed from \url{https://extensions.openoffice.org/de/project/czech-dictionary-pack-ceske-slovniky-cs-cz}}, syntax highlighter etc. To use this tool, you need to first install MikTeX or another \LaTeX{} distribution.
+    \item[\href{http://www.winedt.com/}{WinEdt}] A good combination for Windows is WinEdt + MiKTeX. WinEdt is a GUI for Windows, and if you want to use it, you need to first install \href{http://miktex.org/download}{MikTeX} or \href{http://www.tug.org/texlive/}{TeX Live}.
+    \item[\href{http://kile.sourceforge.net/}{Kile}] Editor for KDE (Linux) desktop environment. Real-time preview. To use this tool, you need to have \href{http://www.tug.org/texlive/}{TeX Live} and Okular installed.
+	\item[\href{http://jabref.sourceforge.net/download.php}{JabRef}] Neat and simple Java program for bibliography (references) file management. No need to learn anything -- provides a simple window and a form for entry editing.
+	\item[\href{https://inkscape.org/en/download/}{InkScape}] Portable opensource vector graphic (SVG and PDF) editor. Excellent tool to use to create images for technical text. Difficult to master, but the results are worth it.
+	\item[\href{https://git-scm.com/}{GIT}] Great tool for teamwork when it comes to projects, but can be incredibly useful even to a single author. Simple version control system, backup options and transfer between multiple computers.
+	\item[\href{http://www.overleaf.com/}{Overleaf}] Online \LaTeX{} tool. A real-time compilation of source text that allows for simple collaboration (supervisor can continuously keep an eye on the progress made), move to a place in source file just by clicking in the PDF preview, spell checker etc. There are some limitations to what you can do if you want to use it for free (some people are comfortable with it for dissertation, others can run into it while they write a~bachelor's thesis) and it is rather slow for long texts. FIT BUT has for students and employees of a license, which can be activated on \url{https://www.overleaf.com/edu/but}.
+\end{description}
+
+Note: Overleaf does not use template Makefile -- to get compilation to work, you need to go to the menu and select \tt projekt.tex \rm as s Main document.
+
+\chapter{Writing english texts}
+\label{anglicky}
+This chapter is taken from web pages of Jan Černocký \cite{CernockyEnglish}.
+
+A lot of people write their technical reports in english (which is good!), but they make a~lot of unnecesary mistakes (which is bad!). I'm not an english export myself, but I've been using this language for a while now to write, read and even communicate -- this chapter contains a handful of important things. If you want to be certain that your thesis or article is 100\,\% correct, your best bet is to hire a native speaker (preferably someone who is technically capable and understands what you write about \ldots).
+
+
+\section*{In general}
+
+\begin{itemize}
+  \item{Before you jump into it head first, I suggest you read a handful of technical articles written in english and try to remember or preferably understand how you should approach writing one yourself.}
+  \item{Always use a spell checking tools -- built in tools in Word, or in OpenOffice. If you work on Linux, I suggest you use ISPELL. Some spell checking (I think it's the one in PSPad) are not very good and ignore a lot of mistakes.}
+  \item{Use grammer checking tools. I'm not entirely sure if there is one available for Linux, but the one in Word is fairly decent and if it underlines anything with green color, it's probably wrong. You can even copy and paste Latex source code here, fix any and all grammar errors and save it as a clean text again. If you use vim, there's a~built in grammar checking tool too, and it's capable of detecting typos and errors in basic grammar. Write this in the first line of your thesis tex file:
+  \begin{verbatim}
+    % vim:spelllang=en_us:spell
+  \end{verbatim}
+  (alternatively \texttt{en\_gb} for OED english) \textit{Editor's note:} There is a very good online tool Grammarly\footnote{\url{https://www.grammarly.com/}}, with free basic version.
+  }
+  \item{Online dictionaries are good, but don't rely on them in every situation. Usually you get multiple choices and not all of them are correct for the given context.}
+  \item{\begin{samepage}You can probably figure out what the correct option is by looking each option up and seeing the context in which they're used, example given: ``advantage/privilege/facility of approach''. Online dictionaries give you a handful of results. Look them up one by one using google search:
+  \begin{verbatim}
+    "advantage of this approach" 1100000 hits
+    "privilege of this approach" 6 hits
+    "facility of this approach"  16 hits
+  \end{verbatim}
+  I'm not saying it's 100\,\% correct, but at least you have something to go on. This can be used to find the correct connectives (e.g. ``among two cases'' or ``between two cases''?)\end{samepage}}
+\end{itemize}
+       
+\section*{SVOMPT and concord}
+
+The structure of an english sentence is SVOPMT: SUBJECT VERB OBJECT MANNER PLACE TIME and there's no other way around it. It is not a flexible structure. There are possibly exceptions in things like a theater play, where something needs to be emphasized. Subject must be present in every single single sentence, people tend to forget as some languages have a sentence structure where the subject can be implicit and not mentioned. SVOMPT applies to dependent clauses too!
+\begin{verbatim}
+  BAD: We have shown that is faster than the other function. 
+  GOOD: We have shown that it is faster than the other function. 
+\end{verbatim}
+
+\noindent Concord or grammatical agreement between two words in a sentence -- it sounds silly, but people make countless mistakes here.
+
+\begin{verbatim}
+  he has 
+  the users have 
+  people were 
+\end{verbatim}
+
+\section*{Articles}
+
+Articles in english are a nightmare and almost all of us fail to use them correctly. The basic rule is, that if there's a particular noun, it's preceeded by ``the''. Definite articles must be in following phrases:
+\begin{verbatim}
+  the first, the second, ...
+  the last
+  the most (superlatives and adverbs) ...
+  the whole 
+  the following 
+  the figure, the table. 
+  the left, the right - on the left pannel, from the left to the right ... 
+\end{verbatim}
+
+\noindent On the contrary, there can't be an article when you're referring to a specific figure, chapter, etc.
+\begin{verbatim}
+  in Figure 3.2
+  in Chapter 7
+  in Table 6.4
+\end{verbatim}
+
+\begin{samepage}
+\noindent The use of ``a'' and ``an'' is based on the pronounciation, rather than how the word is written:
+\begin{verbatim}
+  an HMM
+  an XML
+  a universal model
+  a user
+\end{verbatim}
+\end{samepage}
+
+\section*{Verbs}
+
+Passive voice can be tricky -- regular verbs are usually not a problem, irregular verbs however are a common source of errors, typically
+\begin{verbatim}
+  packet was sent (rather than send)
+  approach was chosen (rather than choosed)
+\end{verbatim}
+\noindent \ldots most of the time, the spell checker will correct it, but it's not guaranteed.
+
+Tenses are a mess at times. If something just is in general, use present tense. If you did something, use past tense. If you got results that already exist and you just discuss them, use present tense. Try to avoid complicated tenses such as present perfect or worse past perfect if you're not 100\,\% sure.
+\begin{verbatim}
+  JFA is a technique that works for everyone in speaker recognition. 
+  We implemented it according to Kenny's recipe in \cite{Kenny}. 
+  12000 segments from NIST SRE 2006 were processed. When compared 
+  with a GMM baseline, the results are completely bad. 
+\end{verbatim}
+
+\section*{Sentence length and structure}
+
+\begin{itemize}
+  \item{Try to write shorter sentences. If you sentence is 5 lines long, it's probably a pain to read, if it can even be done.}
+  \item{Comma is a powerful tool and you should use it for your sentence structure. Use a~comma to seperate the initial dependent clause from the main independent clause. Sometimes it is appropriate to put a comma just before ``and'' (unlike other languages)!}
+\end{itemize}
+\begin{verbatim}
+  In this chapter, we will investigate into ... 
+  The first technique did not work, the second did not work as well, 
+  and the third one also did not work. 
+\end{verbatim}
+
+\section*{The specifics of a technical text}
+
+When writing a technical text, don't use common phrases such as
+\begin{verbatim}
+  he's
+  gonna
+  Petr's working on ...
+\end{verbatim}
+\noindent and others. The only tolerated thing is ``doesn't'', but you can never go wrong with ``does not''.
+
+\begin{samepage}
+\noindent Technical texts utilize passive voice a lot more than active voice: 
+\begin{verbatim}
+  BAD: In this chapter, I describe used programming languages. 
+  GOOD: In this chapter, used programming languages are described.
+\end{verbatim}
+\end{samepage}
+
+If you want to use active voice, it's more common to use ``we'', even though you work alone. ``I'', ``my'', etc. are only used when you need to emphasize that you are the person of utmost importance, for example in the conclusion or when discussing ``original claims'' in disertation.
+
+
+\paragraph{Common erros in words}
+
+\begin{itemize}
+  \item{Pay attention to his/hers, it's not ``it's'' but ``its''}
+  \item{Image is not picture, it's figure.}
+  \item{The connective is ``than'', not ``then'' -- bigger than this, smaller than this \ldots very common error! ``Then'' is used in the context of time.}
+\end{itemize}
+
+
+\chapter{Checklist}
+\label{checklist}
+This checklist was taken from a template for academic work, that is available on Adam Herout's blog \cite{Herout}, based on the ideas of Igor Szöke\footnote{\url{http://blog.igor.szoke.cz/2017/04/predstartovni-priprava-letu-neni.html}}, with their permission.
+
+A big part of the safety of air transport are checklists. They have checklists for basically anything and everything, even the most cut-and-dry procedures. If a pilot can get over the tedious process of marking off every single checkbox of a procedure, you can as well. Make a checklist of your own before you submit your thesis. \bf Yes, really: \rm print it, grab a pencil and check every single item on the list. It will make your life easier –- avoid unnecessary errors that can be fixed within a couple minutes –- as well as others', at very least your supervisor and reviewer of your thesis.
+
+\subsection*{Structure}
+\begin{checklist}
+	\item You can tell that the assignment was completed just by looking at the chapter titles as well as their structures.
+    \item There is no chapter with less than four pages (except for introduction and conclusion). And if so, I discussed this with my supervisor and they gave me a green light.
+\end{checklist}
+
+\subsection*{Figures and charts}
+\begin{checklist}
+	\item Every single image and table was checked and their position is close to the text that references them. In other words, they’re easy to find.
+    \item Every single image and table has a good enough caption, to ensure that the figure makes sense on it’s own, without the necessity to read the text. (There’s no harm in a long caption.)
+    \item If an image is taken from somewhere, it is mentioned in the caption: “Taken from [X].”
+    \item Texts in all images have a font size similar to the surrounding text (neither signifficantly larger, nor signifficantly smaller).
+    \item Charts and schemes are vector graphics (eg. in PDF).
+    \item Screenshots don‘t use lossy compression (they‘re in PNG).
+    \item All images are referenced in the text.
+    \item Axes in charts have their captions (name of the axis, units of measurement, values) and a grind if need be.
+\end{checklist}
+
+\subsection*{Equations}
+\begin{checklist}
+	\item Identifiers and their indexes in equations are single letters (except for rather uncommon cases like $t_{max}$).
+    \item Equations are numbered.
+    \item All the variables and functions that haven‘t been explained yet are explained below (or rarely above) the equation.
+\end{checklist}
+
+\subsection*{Citations}
+\begin{checklist}
+	\item \bf All used sources are cited. \rm
+	\item URL adresses referencing services, projects, sources, github, etc. are referenced using \verb|\footnote{\url{…}}|.
+    \item URL adresses in citations are only present, if necessary – article is cited like an article (author, title, where and when was it published), not using URL.
+    \item Citations have author, title, publisher (conference title), year of publishing. If a~citation does not have either of these, there is a good explanation for this special case and my supervisor agreed.
+    \item If there is anything taken over from some other work in the program source code, it is properly cited therein in conformance with the license.
+	\item If an essential part of the source code of the program is taken over, this is mentioned in the text of the thesis and the source is cited.
+\end{checklist}
+
+\subsection*{Typography}
+\begin{checklist}
+	\item No line extends past the right margin.
+    \item There is no single-letter preposition at the end of a line (fixed using unbreakable space \verb|~|).
+    \item Number of image, table, equation, citation is never a first item of a new line (fixed using unbreakable space \verb|~|).
+    \item There is no space before a numeric reference to a footnote (like this\footnote{footnote example}, not like this \footnote{another footnote example}).
+\end{checklist}
+
+\subsection*{Language}
+\begin{checklist}
+	\item I used spellchecker and there were no typos in the text.
+    \item I had someone else read my thesis (at least one person), that knows czech / slovak / english well.
+    \item Someone who knows english well checked the abstract  in a czech or slovak written abstract thesis.
+    \item No part of the text is written in second person (you).
+    \item If first person is used (i, we), a subjective matter is being described (i decided, i~designed, i focused on, i found out, etc.).
+    \item There are no colloquialisms in the text.
+    \item There are no {\it default} words in the text.
+\end{checklist}
+
+\subsection*{Result is on a data medium, i.e. software}
+\begin{checklist}
+	\item I have a non-rewritable data medium ready.
+    \begin{itemize}
+    	\item CD-R,
+        \item DVD-R,
+        \item DVD+R in ISO9660 format (with RockRidge and/or Jolliet extension) or UDF,
+        \item SD (Secure Digital) card in FAT32 or exFAT format, the card is set to write-protected mode
+    \end{itemize}
+    \item If the result is online (service, application, …), URL is visible in introduction and conclusion.
+    \item The medium contains the following mandatory items:
+    \begin{itemize}
+    	\item source codes (e.g. Matlab, C/C++, Python, \ldots)
+        \item libraries necessary for compilation,
+        \item compiled solution,
+        \item PDF containing a technical report,
+        \item text source code (\LaTeX{}),
+    \end{itemize}
+    and the following optional items after consulting your supervisor:
+    \begin{itemize}
+    	\item relevant (e.g. testing) data,
+        \item demo video,
+        \item poster in PDF
+        \item \ldots
+    \end{itemize}
+    \item Source codes are refactorized, commented and labelled with an authorship header so that others can tell what they actually are.
+    \item Any and all snippets of code taken from another sources are properly cited -- differentiated using a opening and in case of multiple lines of code a closing comment. Comments contain everything that the license on web (always try to find out what the license is -- for example, Stack Overflow\footnote{\url{https://stackoverflow.blog/2009/06/25/attribution-required/}} has a very strict citation policy).
+\end{checklist}
+
+\subsection*{Submission}
+\begin{checklist}
+	\item Do I want to delay (by at most 3 years) the publication ? If so, I will submit an application (in IS) at least a month prior to the submission of the academic work, and I'll include attitude of the company that the intellectual property belongs to and needs to be protected.
+    \item I have at least minimum number of standard pages (can be calculated using Makefile and by adding number of pages that images translate to). If I'm just under the minimum, I consulted my supervisor about it.
+   	\item If I want a two-sided print, I consulted my supervisor about it and I've used correct template settings for two-sided printing. Chapters begin on odd pages.
+    \item Technical report is bound in a bookbindery (at least one print, both prints if I'm delaying the publishing).
+    \item Title page is followed by the specification (in other words, downloaded from IS and inserted into the template)
+    \item Abstract and keywords are uploaded in IS.
+      \begin{itemize}
+        \item There are no \verb|~| characters for non-breaking spaces in the abstract and keywords in IS.
+      \end{itemize}     
+    \item PDF of thesis (with clickable links) is in IS.
+    \item Both prints are signed.
+    \item One (both if I'm delaying the publishing) of the prints contains a data medium with my login written on it using a CD marker (CD marker can be borrowed in library, at Student affairs or when I'm submitting the work).
+\end{checklist}
+
+\chapter{\LaTeX{} for beginners}
+\label{latex}
+
+This chapter contains commonly used \LaTeX{} packages and commands, that you might need when you're developing a thesis.
+
+\subsection*{Useful packages}
+
+Students usually encounter the same issues. Some of them can be solved using the following \LaTeX{} packages:
+
+\begin{itemize}
+  \item \verb|amsmath| -- additional equation typesetting options,
+  \item \verb|float, afterpage, placeins| -- image placement,
+  \item \verb|fancyvrb, alltt| -- change the properties of Verbatim environment, 
+  \item \verb|makecell| -- additional table options,
+  \item \verb|pdflscape, rotating| -- rotate a page by 90 degress (for image or table),
+  \item \verb|hyphenat| -- change how words break,
+  \item \verb|picture, epic, eepic| -- direct image drawing.
+\end{itemize}
+
+Some packages are used in this very template (in the lower section of fitthesis.cls file). It is also advised to read the documentation for individual packages.
+
+A table column aligned to left with a fixed width is defined as "L" in the template (used as "p").
+
+To reference a place within text, use command \verb|\ref{label}|. Depending on the placement of this label, it will be a number of chapter, subchapter, image, table or a similar numbered element. If you want to reference a specific page, use command \verb|\pageref{label}|. To cite a literature reference, use command \verb|\cite{identifier}|. To reference an equation, you can use command \verb|\eqref{label}|.
+
+Symbol -- (dash) is used generated using two minus signs (like this: \verb|--|) in \LaTeX.
+
+\subsection*{Commonly used \LaTeX{} commands}
+\label{sec:Fragments}
+
+I highly recommend you check the source text of this chapter and see how the following examples are created. The source text even contains helpful comments.
+
+% A left-aligned, fixed-width column is defined in the template as "L" (used as p).
+
+Example table:
+\begin{table}[H]
+	\vskip6pt
+	\caption{Assessment table}
+    \vskip6pt
+	\centering
+	\begin{tabular}{llr}
+		\toprule
+		\multicolumn{2}{c}{Name} \\
+		\cmidrule(r){1-2}
+		Name & Surname & Assessment \\
+		\midrule
+		Jan & Novák & $7.5$ \\
+		Petr & Novák & $2$ \\
+		\bottomrule
+	\end{tabular}
+	\label{tab:ExampleTable}
+\end{table}
+
+% Ohraničení lze upravit dle potřeby:
+% http://latex-community.org/forum/viewtopic.php?f=45&t=24323
+% http://tex.stackexchange.com/questions/58163/problem-with-multirow-and-table-cell-borders
+% http://tex.stackexchange.com/questions/79369/formatting-table-border-and-text-alignment-in-latex-table
+
+\noindent Example equation:
+\begin{equation}
+\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+\label{rovnice2}
+\end{equation}
+and two horizontally aligned equations: % znak & řídí zarovnání
+\begin{align} \label{eq:soustava}
+	3x &= 6y + 12 \\
+	x &= 2y + 4 
+\end{align}
+
+If you need to reference an equation from the text, you can use command \verb|\eqref|. For example, to reference the equations above \eqref{rovnice2}. If you want to align the equation number vertically, you can use command \texttt{split}:
+
+\begin{equation} \label{eq:soustavaSrovnana}
+\begin{split}
+	3x &= 6y + 12 \\
+	x &= 2y + 4
+\end{split}
+\end{equation}
+
+Mathematical symbols ($\alpha$) and expressions can be placed even in text $\cos\pi=-1$ and can also be in a footnote%
+\footnote{Formula in a footnote: $\cos\pi=-1$}.
+
+Image~\ref{sirokyObrazek} displays a wide image comprised of multiple smaller images. Standard raster image is inserted in the same way as image \ref{keepCalm}.
+
+% Využití \begin{figure*} způsobí, že obrázek zabere celou šířku stránky. Takový obrázek dříve mohl být pouze na začátku stránky, případně na konci s využitím balíčku dblfloatfix (případné [h] se ignorovalo a [H] obrázek odstraní). Nové verze LaTeXu už umí i [h].
+\begin{figure*}[h]\centering
+  \centering
+  \includegraphics[width=\linewidth,height=1.7in]{obrazky-figures/placeholder.pdf}\\[1pt]
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}\hfill
+  \includegraphics[width=0.24\linewidth]{obrazky-figures/placeholder.pdf}
+  \caption{\textbf{Wide image.} Image can be comprised of multiple smaller images. If you want to address the partial images from text, use packagae \texttt{subcaption}.}
+  \label{sirokyObrazek}
+\end{figure*}
+
+% Uncomment this to switch to landscape oriented A3 paper
+% \eject \pdfpagewidth=420mm
+
+\begin{figure}[hbt]
+	\centering
+	\includegraphics[width=0.3\textwidth]{obrazky-figures/keep-calm.png}
+	\caption{Good text is a bad text, that has been changed countless times. You have to start somewhere.}
+	\label{keepCalm}
+\end{figure}
+
+Sometimes it is necessary to attach a diagram that does not fit on an A4 page. Then it is possible to insert one A3 page and fold it into the thesis (so-called Engineering fold, similar to Z-fold, where two folds are created -- face down and face up). Switching is performed as follows: \texttt{\textbackslash{}eject \textbackslash{}pdfpagewidth=420mm} (210mm to switch it back).
+
+Other frequently used commands can be found above in the text, because a single practical example of correct use is better than ten pages of examples.
+
+% Uncomment this to switch back to A4
+% \eject \pdfpagewidth=210mm
+
+%--- Beginning of a section taken from the work of Mr. Pyšný ---
+% This section was subsequently modified along with the BibTeX style modifications.
+
+\newcommand{\zarazky}{%
+Location in source document: \= %
+Some horribly long example \= \kill}
+
+% newline command
+\newcommand{\odradkovani}{\\[0.3em]}
+
+\chapter{Example of bibliographic citations}
+\label{priloha-priklady-citaci}
+This appendix was taken from \cite{Pysny} and edited for the latest version of enplain style. It contains a set of supported citation types with examples of specific bibliographic citations.
+
+The following pages contain examples of bibliographic citations for types of publications and their parts listed below:
+\begin{itemize}
+    \item[--] magazine article (p. \pageref{pr-casopis-clanek}),
+    \item[--] three monographs (p. \pageref{pr-monografie1}, \pageref{pr-monografie2} and \pageref{pr-monografie3}),
+    \item[--] conference proceedings and conference proceedings paper (p. \pageref{pr-sbornik} and \pageref{pr-sbornik-clanek}),
+    \item[--] book chapter (p. \pageref{pr-kapitola-monografie}),
+    \item[--] manual and documentation (p. \pageref{pr-manual-doc})
+    \item[--] theses (p. \pageref{pr-akademicka-prace1} and \pageref{pr-akademicka-prace2}),
+    \item[--] research report (p. \pageref{pr-vyzkum}),
+    \item[--] unpublished materials (p. \pageref{pr-nepublikovane}),
+    \item[--] web page and a web site (p. \pageref{pr-webpage} and \pageref{pr-website}).
+\end{itemize}
+
+All of the examples listed here respect a single convention. Each example is comprised of these three parts:
+\begin{itemize}
+    \item[--] First part is always what is called a \textit{structure of bibliographic citation}. Structure of each bibliographic citation is strictly tied to the type of cited publication. Each structure of bibliographic citation is comprised of mandatory elements, that are typeset with a standard typeface and it is necessary to specify all of them (can be found out from the sources of the cited publication). Optional elements are typeset in italics and whether or not they are included in the bibliographic citation is entirely up to the author creating the list of bibliographic citations.
+    \item[--] Next is the text of bibliographic citation. An exception to this is for example a~bibliographic citation of a thesis, where there are two different bibliographic citation texts.
+    \item[--] And the last part is a full definition of a~record in bibliographic database. If you let \textbf{em} process this record with the help of bibliographic style enplain, you'll get a~bibliographic citation listed in that example.
+\end{itemize}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of an article in a periodical literature}
+\label{pr-casopis-clanek}
+\begin{tabbing} 
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Filip {\sc Blažek}
+
+\odradkovani
+Article title \>
+Grotesky pro 21. století
+
+\odradkovani
+{\em Periodical title}\>
+{\em Typo}
+
+\odradkovani
+{\em Periodical subtitle}\footnotemark[1]
+
+\odradkovani
+Place of publication\footnotemark[1] \>
+
+\odradkovani
+Publisher\footnotemark[1] \>
+
+\odradkovani
+Date of publication \>
+2006
+
+\odradkovani
+Volume, issue number \>
+vol. 4, no. 24
+
+\odradkovani
+Page range \>
+p. 8--21
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Standard number \>
+ISSN 1214-0716
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Blažek}, F. Grotesky pro 21. století. {\em Typo}. 2006, vol. 4, no. 24,
+p. 8--21. ISSN 1214-0716.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Article{Blazek:2006:Grotesky,
+   author               = "Blažek, Filip",
+   title                = "Grotesky pro 21. století",
+   journal              = "Typo",
+   year                 = "2006",
+   volume               = "4",
+   number               = "24",
+   pages                = "8--21",
+   issn                 = "1214-0716"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Examples of bibliographic citations of monographic \\publications}
+\label{pr-monografie1}
+\begin{tabbing} 
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Erich von {\sc D{\"a}niken}
+
+\odradkovani
+{\em Monography title} \>
+{\em Prorok minulosti}
+
+\odradkovani
+{\em Monography subtitle}\footnotemark[1] \>
+
+\odradkovani
+Edition \>
+1st ed.
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+Přel. R. Řežábek
+
+\odradkovani
+Place of publication \>
+Praha
+
+\odradkovani
+Publisher \>
+Naše vojsko
+
+\odradkovani
+Date of publication \>
+1994
+
+\odradkovani
+Pages \>
+220
+
+\odradkovani
+Series and volume \>
+Fakta a~svědectví, vol. 119
+
+\odradkovani
+Notes\footnotemark[2] \>
+Translated from: Prophet der Varganghenheit
+
+\odradkovani
+Standard number \>
+ISBN 80-206-0434-0
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc D{\"a}niken}, E. von. {\em Prorok minulosti}. 1st ed. Přel. R. Řežábek. Praha: Naše vojsko, 1994. 220 p. Fakta a~svědectví, vol. 119. Translated from: Prophet der Varganghenheit. ISBN 80-206-0434-0.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Book{Daniken:1994:ProrokMinulosti,
+   author               = "von D{\"{a}}niken, Erich",
+   title                = "Prorok minulosti",
+   contrybutory         = "Transl. R. Řežábek",
+   publisher            = "Naše vojsko",
+   address              = "Praha",
+   year                 = "1994",
+   edition              = "1",
+   series               = "Fakta a~svědectví",
+   volume               = "119",
+   pages                = "220",
+   note                 = "Translated from: Prophet der Varganghenheit",
+   isbn                 = "80-206-0434-0"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\label{pr-monografie2}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Frank {\sc Mittelbach} and Michel {\sc Goossens} et al.
+
+\odradkovani
+{\em Monography title} \>
+{\em The {\LaTeX} Companion}
+
+\odradkovani
+{\em Monography subtitle}\footnotemark[1] \>
+
+\odradkovani
+Edition \>
+2nd ed.
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+
+\odradkovani
+Publisher \>
+Addison-Wesley
+
+\odradkovani
+Date of publication \>
+2004
+
+\odradkovani
+Pages \>
+
+\odradkovani
+Series and volume \>
+Tools and Techniques for Computer Typesetting
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Standard number \>
+ISBN 0-201-36299-6
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Mittelbach}, F. and {\sc Goossens}, M. et al.
+{\em The {\LaTeX} Companion}. 2nd ed. Addison-Wesley, 2004.
+Tools and Techniques for Computer Typesetting. ISBN 0-201-36299-6.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Book{Mittelbach:2004:LatexCompanion,
+   author               = "Mittelbach, Frank and Goossens, Michel and
+                           others",
+   title                = "The {{\LaTeX}} Companion",
+   publisher            = "Addison-Wesley",
+   year                 = "2004",
+   edition              = "2",
+   series               = "Tools and Techniques for Computer Typesetting",
+   isbn                 = "0-201-36299-6"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of bibliographic citation of monographic publications (brochure)}
+\label{pr-monografie3}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+{\sc WINGAS}
+
+\odradkovani
+{\em Monography title} \>
+{\em More energy for your future}
+
+\odradkovani
+{\em Monography subtitle}\footnotemark[1]
+
+\odradkovani
+Edition \>
+4th ed.
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+Kessel, Germany
+
+\odradkovani
+Publisher \>
+WINGAS
+
+\odradkovani
+Date of publication \>
+January 2019
+
+\odradkovani
+Pages\footnotemark[1] \>
+
+\odradkovani
+Series and number \>
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Standard number \>
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc WINGAS}. {\em More energy for your future}. 4th ed. Kessel, Germany: WINGAS, January 2019.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Booklet{WINGAS:2019:Energy,
+    author              = "WINGAS",
+    title               = "More energy for your future",
+    edition             = "4",
+    publisher           = "WINGAS",
+    address             = "Kessel, Germany",
+    year                = "2019",
+    month               = 1
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of bibliographic citation of conference proceedings}
+\label{pr-sbornik}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Joaquim {\sc Jorge} and Václav {\sc Skala}
+
+\odradkovani
+{\em Proceedings title} \>
+{\em SCG ’2006: full papers proceedings: the 14-th}
+
+    \odradkovani \>
+    {\em international conference in central Europe}
+    
+    \odradkovani \>
+    {\em on computer graphics, visualization and computer}
+    
+    \odradkovani \>
+    {\em vision 2006: University of West Bohemia, Plzen,}
+
+    \odradkovani \>
+    {\em Czech Republic, January 31 -- February 2, 2006}
+
+\odradkovani
+{\em Proceedings subtitle}\footnotemark[1]
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+Plzeň
+
+\odradkovani
+Publisher \>
+University of West Bohemia
+
+\odradkovani
+Date of publication \>
+2006
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Standard number \>
+ISBN 978-80-210-5490-5
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Jorge}, J. and {\sc Skala}, V., ed. {\em WSCG ’2006: full papers proceedings: the 14-th
+international conference in central Europe on computer graphics, visualization and
+computer vision 2006: University of West Bohemia, Plzen, Czech Republic, January
+31 - February 2, 2006.} Plzeň: University of West Bohemia, 2006. ISBN
+978-80-210-5490-5.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Proceedings{Joaquim,
+    editor              = "Joaquim Jorge and Václav Skala",
+    title               = "WSCG ’2006: full papers proceedings: the 14-th 
+                           international conference in central Europe on 
+                           computer graphics, visualization and computer 
+                           vision 2006: University of West Bohemia, Plzen, 
+                           Czech Republic, January 31 -- February 2, 2006",
+    address             = "Plzeň",
+    publisher           = "University of West Bohemia",
+    year                = "2006",
+    isbn                = "978-80-210-5490-5"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of a monographic \\
+publication entry (paper in conference proceedings)}
+\label{pr-sbornik-clanek}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Antti {\sc Valmari}
+
+\odradkovani
+Paper title \>
+Compositionality in State Space Verification Methods
+
+\odradkovani
+In: {\em Proceedings title} \>
+{\em Proceedings of the 17\,$^{th}$ International Conference on}
+
+   \odradkovani \>
+   {\em Application and Theory of Petri Nets}
+
+\odradkovani
+{\em Proceedings subtitle}\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+Osaka (Japan)
+
+\odradkovani
+Publisher \>
+Springer-Verlag
+
+\odradkovani
+Date of publication \>
+June 1996
+
+\odradkovani
+Page range \>
+p. 29--56
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Standard number \>
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Valmari}, A. Compositionality in State Space Verification Methods.
+In: {\em Proceedings of the 17\,$^{th}$ International Conference on Application and
+Theory of Petri Nets}. Osaka, Japan: Springer-Verlag, June 1996. p. 29--56. Lecture Notes in Computer Science. ISBN 978-3-540-61363-3
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@InProceedings{Valmari:1996:CompInStSpVerMeths,
+   author               = "Antti Valmari",
+   title                = "Compositionality in State Space Verification
+                           Methods",
+   booktitle            = "Proceedings of the 17\,$^{th}$ International
+                           Conference on Application and Theory of
+                           Petri Nets",
+   address              = "Osaka, Japan",
+   publisher            = "Springer-Verlag",
+   series               = "Lecture Notes in Computer Science",
+   year                 = "1996",
+   month                = 6,
+   pages                = "29--56",
+   isbn                 = "978-3-540-61363-3"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of a monographic \\
+publication part (book chapter)}
+\label{pr-kapitola-monografie}
+\begin{tabbing} 
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) of chapter \>
+David {\sc Halliday}, Jearl {\sc Walker} and~Robert {\sc Resnick}
+
+\odradkovani
+Chapter title \>
+Část 5 -- Moderní fyzika
+
+\odradkovani
+In: Monography author(s)\footnotemark[1] \>
+
+\odradkovani
+{\em Monography title} \>
+{\em Fyzika: vysokoškolská učebnice obecné fyziky}
+
+\odradkovani
+Edition \>
+1st ed.
+
+\odradkovani
+Secondary author(s)\footnotemark[2] \>
+
+\odradkovani
+Place of publication \>
+Brno
+
+\odradkovani
+Publisher \>
+VUTIUM
+
+\odradkovani
+Year of publication \>
+2000
+
+\odradkovani
+Page range \>
+pp.~1129--1153
+
+\odradkovani
+Notes\footnotemark[3] \>
+
+\odradkovani
+Standard number \>
+ISBN 80-214-1868-0
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Halliday}, W., {\sc Walker}, J. and~{\sc Resnick}, R. Část 5 -- Moderní fyzika.
+In: {\em Fyzika: vysokoškolská učebnice obecné fyziky}. 1st ed. Brno: VUTIUM, 2000. p.~1129--1153. ISBN 80-214-1868-0.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@InBook{InColPhys,
+    author              = "David Halliday and Jearl Walker and Robert 
+                           Resnick",
+    title               = "Část 5 -- Moderní fyzika",
+    booktitle           = "Fyzika:vysokoškolská učebnice obecné fyziky",
+    publisher           = "VUTIUM",
+    address             = "Brno",
+    year                = "2000",
+    edition             = "1",
+    pages               = "1129--1153",
+    isbn                = "80-214-1868-0"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is only used of the author of the chapter and the monography are not the same person.}
+\footnotetext[2]{This element is optional.}
+\footnotetext[3]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of bibliographic citation of a manual or \\ documentation}
+\label{pr-manual-doc}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+STMicroelectronic
+
+\odradkovani
+{\em Manual title} \>
+{\em User manual -- Description of STM32F0 HAL}
+    
+    \odradkovani \>
+    {\em and low-layerdrivers.}
+
+\odradkovani
+{\em Manual subtitle}\footnotemark[1] \>
+
+\odradkovani
+Edition \>
+6th ed.
+
+\odradkovani
+Date of publication \>
+September 2017
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation} \odradkovani
+{\sc STMicroelectronic}. {\em User manual -- Description of STM32F0 HAL and low-layerdrivers}. 6th ed. September 2017.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@manual{STM32F0,
+    author              = "STMicroelectronic",
+    title               = "User manual -- Description of STM32F0 HAL and 
+                           low-layerdrivers",
+    year                = "2017",
+    month               = 9,
+    edition             = "6"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is whz it is considered optional in the bibliographic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of a thesis}
+\label{pr-akademicka-prace1}
+\begin{tabbing} 
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Petr {\sc Koscelník}
+
+\odradkovani
+{\em Thesis title} \>
+{\em Analýza prostorových a formálních vlastností středověkých}
+
+    \odradkovani \>
+    {\em obléhacích táborů}
+
+\odradkovani
+{\em Thesis subtitle}\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+Plzeň
+
+\odradkovani
+Year of publication \>
+2010
+
+\odradkovani
+Pages\footnotemark[1] \>
+
+\odradkovani
+Thesis type \>
+Masters thesis
+
+\odradkovani
+School \>
+Západočeská univerzita v Plzni. Fakulta filozofická
+
+\odradkovani
+Thesis supervisor\footnotemark[1] \>
+Vedoucí práce Karel NOVÁČEK
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation} \odradkovani
+{\sc Koscelník}, P. {\em Analýza prostorových a formálních vlastností středověkých obléhacích táborů}. Plzeň, 2010. Masters thesis. Západočeská univerzita v Plzni. Fakulta filozofická. Vedoucí práce Karel {\sc NOVÁČEK}
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@MastersThesis{Koscesnik:2010:AnalyzaVlastnostiOblehacichTaboru,
+   author               = "Petr Koscesník",
+   title                = "Analýza prostorových a formálních vlastností 
+                           středověkých obléhacích táborů",
+   school               = "Západočeská univerzita v Plzni. 
+                           Fakulta filozofická.",
+   address              = "Plzeň",
+   year                 = "2010",
+   note                 = "Vedoucí práce Karel NOVÁČEK"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\label{pr-akademicka-prace2}
+\begin{tabbing} 
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Vladimír {\sc Janoušek}
+
+\odradkovani
+{\em Thesis title} \>
+{\em Modelování objektů Petriho sítěmi}
+
+\odradkovani
+{\em Thesis subtitle}\footnotemark[1] \>
+
+\odradkovani
+Place of publication \>
+Brno
+
+\odradkovani
+Year of publication \>
+1998
+
+\odradkovani
+Pages\footnotemark[1] \>
+121
+
+\odradkovani
+Thesis type \>
+Dissertation
+
+\odradkovani
+School \>
+FEI VUT v Brně
+
+\odradkovani
+Thesis supervisor\footnotemark[1] \>
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation} \odradkovani
+{\sc Janoušek}, V. {\em Modelování objektů Petriho sítěmi}. Brno, 1998. 121 p. Dissertation. FEI VUT v Brně.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@PhdThesis{Janousek:1998:ModelovaniObjektuPetrihoSitemi,
+   author               = "Janoušek, Vladimír",
+   title                = "Modelování objektů Petriho sítěmi",
+   school               = "BUT FEECS",
+   address              = "Brno",
+   year                 = "1998",
+   pages                = "121"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of a technical report \\ (research report)}
+\label{pr-vyzkum}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Martin {\sc Drahanský}, Filip {\sc Orság} and Dana {\sc Lodrová}
+
+\odradkovani
+{\em Report title} \>
+{\em Technické hodnocení biometrických systémů}
+
+\odradkovani
+Report type and number \>
+Research report
+
+\odradkovani
+Place of publication \>
+Brno
+
+\odradkovani
+Publisher \>
+Národní bezpečnostní úřad
+
+\odradkovani
+Year of publication \>
+2008
+
+\odradkovani
+Pages\footnotemark[1] \>
+108
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Availability \>
+www.{f}it.vutbr.cz/research/view\_pub.php?id=8663
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Drahanský}, M., {\sc Orság}, F. a {\sc Lodrová}, D.
+{\em Technické hodnocení biometrických systémů}. Reseach report. Brno: Národní bezpečnostní
+úřad, 2008. 108 p.  Available at: \\
+{\tt http://www.fit.vutbr.cz/research/view\_pub.php?id=8663}.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@TechReport{DOL:TechnickeHodnoceniBiometrickychSystemu:2008,
+   author               = "Drahanský, Martin and Orság, Filip and
+                           Lodrová, Dana",
+   title                = "Technické hodnocení biometrických systémů",
+   pages                = "108",
+   year                 = "2008",
+   address              = "Brno",
+   institution          = "Národní bezpečnostní úřad",
+   type                 = "Research report",
+   url = "http://www.fit.vutbr.cz/research/view\_pub.php?id=8663"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is whz it is considered optional in the bibliographic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of unpublished materials}
+\label{pr-nepublikovane}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+Katarána {\sc Grešová}
+
+\odradkovani
+{\em Title} \>
+{\em Anotovanie a indexácia rozsiahlych textových dát}
+
+    \odradkovani \>
+    {\em projektu CPK}
+
+\odradkovani    
+{\em Subtitle}\footnotemark[1] \>
+{\em práca v letnom semestri 2016/2017}
+
+\odradkovani
+Institution \>
+FIT VUT v Brně
+
+\odradkovani
+Address \>
+Božetěchova 1/2, 612 00 Brno-Královo Pole
+
+\odradkovani
+Date \>
+2017
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+{\sc Grešová}, K. {\em Anotovanie a indexácia rozsiahlych textových dát projektu CPK: práca v~letnom semestri 2016/2017}. Božetěchova 1/2, 612 00 Brno-Královo Pole: FIT VUT
+v Brně, 2017.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Unpublished{Gresova,
+    author              = "Katarína Grešová",
+    title               = "Anotovanie a indexácia rozsiahlych textových dát 
+                           projektu CPK",
+    subtitle            = "práca v letnom semestri 2016/2017",
+    year                = "2017",
+    institution         = "FIT VUT v Brně",
+    address             = "Božetěchova 1/2, 612 00 Brno-Královo Pole"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is whz it is considered optional in the bibliographic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of electronic monography \\
+(web page)}
+\label{pr-webpage}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+NIST
+
+\odradkovani
+Web page title \>
+Dictionary of Algorithms and Data Structures
+
+\odradkovani
+{\em Web site title} \>
+{\em National Institute of Standards and Technology}
+
+\odradkovani
+Type of medium \>
+online
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+
+\odradkovani
+Date of publication \>
+1998
+
+\odradkovani
+Date of revision/update \>
+Updated 2009-03-02
+
+\odradkovani
+Date of citation \>
+March 29, 2009
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Availability \>
+http://www.nist.gov/dads
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+NIST. Dictionary of Algorithms and Data Structures. {\em National Institute of Standards and Technology} [online]. 1998. Updated 2009-03-02 [cit. March 29, 2009]. \\
+Available at: {\tt http://www.nist.gov/dads}.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Webpage{NIST:DADS,
+   author               = "NIST",
+   secondarytitle       = "Dictionary of Algorithms and Data Structures",
+   title                = "National Institute of Standards and Technology"
+   howpublished         = "online",
+   year                 = "1998",
+   revised              = "Updated 2009-03-02",
+   cited                = "!2009-03-29",
+   url                  = "http://www.nist.gov/dads"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section*{Example of a bibliographic citation of electronic monography \\
+(web site)}
+\label{pr-website}
+\begin{tabbing}
+\zarazky
+\textbf{Element} \> \textbf{Example} \odradkovani
+Primary author(s) \>
+NIST
+
+\odradkovani
+{\em Web site title} \>
+{\em National Institute of Standards and Technology}
+
+\odradkovani
+Type of medium \>
+online
+
+\odradkovani
+Secondary author(s)\footnotemark[1] \>
+
+\odradkovani
+Date of publication \>
+1998
+
+\odradkovani
+Date of revision/update \>
+Updated 2009-03-02
+
+\odradkovani
+Date of citation \>
+March 29, 2009
+
+\odradkovani
+Notes\footnotemark[2] \>
+
+\odradkovani
+Availability \>
+http://www.nist.gov/
+
+\odradkovani
+\end{tabbing}
+
+\noindent \textbf{Bibliographic citation:} \odradkovani
+NIST. {\em National Institute of Standards and Technology} [online]. 1998. Updated 2009-03-02 [cit. March 29, 2009]. Available at: {\tt http://www.nist.gov/}.
+
+\bigskip \bigskip
+\noindent \textbf{Record in bibliographic database:}
+\vspace{-0.5em}
+\begin{verbatim}
+@Website{NIST,
+   author               = "NIST",
+   title                = "National Institute of Standards and Technology"
+   howpublished         = "online",
+   year                 = "1998",
+   revised              = "Updated 2009-03-02",
+   cited                = "!2009-03-29",
+   url                  = "http://www.nist.gov/"
+}
+\end{verbatim}
+
+\footnotetext[1]{This element is optional.}
+\footnotetext[2]{This element is not prescribed in the standard, which is why it is considered optional in the bibligoraphic style.}
+
+%-------------------------------------------------------------------------------
+\newpage
+\section{Types of records and their elements}
+\label{sekce-std-styly}
+
+
+\begin{longtable}[c]{|l|l|}
+\hline
+%-------------------------------------------------------------------------------
+\texttt{@Article} &
+Magazine article.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt journal}, {\tt year}, {\tt volume}, {\tt number}, 
+\\[-4pt] & \qquad \qquad {\tt pages}, {\tt issn}.
+\\[0pt] &
+{\em Optional:} {\tt journalsubtitle}, {\tt address}, {\tt publisher}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@BachelorsThesis} &
+Bachelor's thesis.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt address}, {\tt year}, {\tt school}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt pages}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Book} &
+Book with a named publisher. Monography (nonperiodical  \\[0pt] &
+publication comprised of a single volume or finite number of \\[0pt] &
+volumes).
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt edition}, {\tt address}, {\tt publisher}, {\tt year},
+\\[-4pt] & \qquad \qquad \space {\tt series}, {\tt isbn}.
+\\[0pt] &
+{\em Optional:} {\tt booksubtitle}, {\tt contrybutory}, {\tt volume}, {\tt pages},  
+\\[-4pt] & \qquad \qquad \space {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Booklet} &
+Brochure. Printed and bound publication.
+\\[0pt] &
+(without a named publisher). Some information may be missing.
+\\[0pt] &
+{\em Required:} {\tt viz @Book}.
+\\[0pt] &
+{\em Optional:} {\tt viz @Book}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@InBook} &
+Book chapter.
+\\[0pt] &
+{\em Required:} {\tt author} nebo {\tt editor}, {\tt title}, {\tt chapter} a/nebo {\tt pages}, 
+\\[-4pt] & \qquad \qquad \space {\tt publisher}, {\tt year}.
+\\[0pt] &
+{\em Optional:} {\tt volume} nebo {\tt number}, {\tt series}, {\tt type}, {\tt address}, {\tt dition}, 
+\\[-4pt] & \qquad \qquad \space \,{\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@InCollection} &
+Section of a book with it's own title.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt booktitle}, {\tt edition}, {\tt address},
+\\[-4pt] & \qquad \qquad \space {\tt publisher}, {\tt year}, {\tt pages}, {\tt isbn}.
+\\[0pt] &
+{\em Optional:} {\tt editor}, {\tt volume} nebo {\tt number}, {\tt series}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@InProceedings} &
+Conference proceedings paper (synonumous with Conference).
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt booktitle}, {\tt address}, {\tt publisher}, 
+\\[-4pt] & \qquad \qquad \space {\tt year}, {\tt pages}, {\tt isbn}.
+\\[0pt] &
+{\em Optional:} {\tt booksubtitle}, {\tt editor}, {\tt series}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Manual} &
+Manual or other technical documentation.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt edition}, {\tt year}.
+\\[0pt] &
+{\em Optional:} {\tt organization}, {\tt address}, {\tt month}, {\tt note}. 
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@MastersThesis} &
+Master's thesis.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt address}, {\tt year}, {\tt school}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt pages}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Misc} &
+Use this record type, if you can't find a more suitable one. \\[0pt] &
+Prints a warning if no optional element is used.
+\\[0pt] &
+{\em Required:} No optional element.
+\\[0pt] &
+{\em Optional:} {\tt author}, {\tt title}, {\tt howpublished}, {\tt year}, {\tt cited}, {\tt month}, 
+\\[-4pt] & \qquad \qquad \space {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@PhdThesis.} &
+Dissertation.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt address}, {\tt year}, {\tt school}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt pages}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Proceedings} &
+Conference proceedings.
+\\[0pt] &
+{\em Required:} {\tt editor}, {\tt title}, {\tt address}, {\tt publisher}, {\tt year}, {\tt isbn}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt contrybutory}, {\tt series}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@TechReport} &
+A report published by an university or another institution. 
+\\[0pt] &
+Usually numbered.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt type}, {\tt number}, {\tt institution}, {\tt year}.
+\\[0pt] &
+{\em Optional:}  {\tt pages}, {\tt month}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Unpublished} &
+Unpublished materials.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt year}, {\tt institution}, {\tt address}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt edition}, {\tt month}, {\tt note}. 
+
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Webpage} &
+Web page.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt secondarytitle}, {\tt title}, {\tt howpublished},
+\\[-4pt] & \qquad \qquad \space {\tt year}, {\tt revised}, {\tt cited}, {\tt url}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt contrybutory}, {\tt address}, {\tt publisher}, 
+\\[-4pt] & \qquad \qquad \space {\tt month}, {\tt path}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\texttt{@Website} &
+Web site.
+\\[0pt] &
+{\em Required:} {\tt author}, {\tt title}, {\tt howpublished}, {\tt year}, {\tt revised}, 
+\\[-4pt] & \qquad \qquad \space {\tt cited}, {\tt url}.
+\\[0pt] &
+{\em Optional:} {\tt subtitle}, {\tt contrybutory}, {\tt address}, {\tt publisher}, 
+\\[-4pt] & \qquad \qquad \space {\tt month}, {\tt path}, {\tt note}.
+\\ \hline
+%-------------------------------------------------------------------------------
+\caption{Standard types of BibTeX records.}
+\label{tab-typy}
+\end{longtable}
+
+%--- End of section taken frm work of Mr. Pyšný ---

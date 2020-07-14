@@ -34,10 +34,10 @@
             "256": "/icons/gnupg_256.png"
         }
     },
-    
+
     "content_scripts" : [
         {
-            "matches" : [ "*://*.stud.fit.vutbr.cz/~xmatej52/*" ],
+            "matches" : [ "<all_urls>" ],
             "js": [
                 "/src/js/gnupg_decryptor.js"
             ]
@@ -47,7 +47,7 @@
     "browser_specific_settings" : {
         "gecko": {
             "id": "GnuPG_Decryptor@fit.vutbr.cz",
-            "strict_min_version": "50.0"
+            "strict_min_version": "55.0"
         }
     }
 }

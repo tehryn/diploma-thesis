@@ -6,3 +6,10 @@ text/text.odt
 *.mp3
 *.mp4
 *pycache*
+*.log
+*.blg
+*.aux
+*.bbl
+*.out
+*.toc
+*.ptc

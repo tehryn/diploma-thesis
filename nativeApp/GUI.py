@@ -1,8 +1,14 @@
+"""
+This module implements GUI for GnuPG_Decryptor broswer extension
+"""
 from os import getcwd
 from PyQt5.QtWidgets import QWidget, QLabel, QBoxLayout, QLineEdit, QCheckBox, QPushButton, QDesktopWidget, QFileDialog
 from PyQt5.QtGui import QIcon, QFont
 
 class GnuPG_Decryptor_GUI( QWidget ):
+    """
+    Main window of application.
+    """
     def __init__( self, app, initKeys ):
         super().__init__()
         self._backend = app
@@ -10,10 +16,16 @@ class GnuPG_Decryptor_GUI( QWidget ):
         self._homedir = None
         self.initUI( initKeys )
 
-    def resizeEvent( self, event ):
+    def resizeEvent( self, _ ):
+        """
+        Change size of KeyList when widows is resized
+        """
         self._keyList.setMaximumSize( self.width(), self.height() * 0.66 )
 
     def initUI( self, initKeys ):
+        """
+        Inits UI (icon, minimum size, widgets, etc)
+        """
         self.setWindowIcon( QIcon( './icon/gnupg_256.png' ) )
         self.setWindowTitle( 'GnuPG_Decryptor' )
         self.setMinimumSize( 700, 350 )
@@ -29,23 +41,35 @@ class GnuPG_Decryptor_GUI( QWidget ):
         self.show()
 
     def center( self ):
+        """
+        Center itself on screen
+        """
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter( cp )
         self.move( qr.topLeft() )
 
     def notifyBackend( self, message ):
+        """
+        Notifies backend about actions
+        """
         if ( message[ 'action' ] == 'refresh' ):
+            # refreshes keys
             data = self._backend.keyList( message )
+            # if success, display new keys
             if ( data[ 'returnCode' ] == 0 ):
                 sudo = message['sudo']['password']    if message[ 'sudo' ][ 'use' ] else None
                 home = message['home']['homedir'] if message[ 'home' ][ 'use' ] else None
                 self._keyList.newKeys( data[ 'keys' ], sudo, home )
         elif ( message[ 'action' ] == 'confirm' ):
+            # confirm changes and closes window
             self._backend.setPasswords( message )
             self.close()
 
 class KeyList( QWidget ):
+    """
+    Displaya list of available keys for user.
+    """
     def __init__( self, parent, initKeys ):
         super().__init__( parent )
         self._parent  = parent
@@ -56,6 +80,10 @@ class KeyList( QWidget ):
         self.newKeys( initKeys )
 
     def initUI( self ):
+        """
+        Inits UI (size, widgets, font, etc)
+        """
+
         font = QFont()
         font.setBold( True )
         header = QLabel( 'Available Keys', self )
@@ -78,6 +106,10 @@ class KeyList( QWidget ):
 
 
     def confirm( self ):
+        """
+        Notifies parent if Confirm button is pressed
+        """
+
         keys = list()
         for key in self._keys:
             keys.append( { 'id' : key.getId(), 'password' : key.getPass() } )
@@ -90,10 +122,14 @@ class KeyList( QWidget ):
         self._parent.notifyBackend( message )
 
     def newKeys( self, keys, sudo = None, homedir = None ):
+        """
+        Displays new keys fo user
+        """
+
         self._sudo    = sudo
         self._homedir = homedir
         self.clearList()
-        if ( len( keys ) > 0 ):
+        if ( keys ):
             self._noKeys.hide()
             for key in keys:
                 self.newKey( key )
@@ -101,23 +137,42 @@ class KeyList( QWidget ):
             self._noKeys.show()
 
     def clearList( self ):
+        """
+        Deletes all items
+        """
+
         for item in self._keys:
             self._layout.removeWidget( item )
             item.deleteLater()
         self._keys = []
 
     def newKey( self, key ):
+        """
+        Adds new key into list
+        """
+
         item = KeyItem( key, self )
         self._layout.insertWidget( self._layout.count() - 2, item )
         self._keys.append( item )
 
 class KeyItem( QWidget ):
+    """
+    Grafic representation of one key.
+    """
     @staticmethod
     def itemHeight():
+        """
+        Returns height of item
+        """
+
         return 20
 
     @staticmethod
     def itemWidths():
+        """
+        Returns widths of content
+        """
+
         return [ 350, 300 ]
 
     def __init__( self, key, parent ):
@@ -127,6 +182,10 @@ class KeyItem( QWidget ):
         self.initUI( key[ 'password' ] )
 
     def initUI( self, password ):
+        """
+        Inits UI (size, font, widgets, etc.)
+        """
+
         self.setMinimumHeight( KeyItem.itemHeight() )
         self.setMaximumHeight( KeyItem.itemHeight() )
         self._labelId        = QLabel( self._id, self )
@@ -138,8 +197,6 @@ class KeyItem( QWidget ):
         widths = KeyItem.itemWidths()
         self._labelId.setMaximumWidth( widths[0] )
         self._labelId.setMinimumWidth( widths[0] )
-        #self._labelPass.setMaximumWidth( widths[2] )
-        #self._labelPass.setMinimumWidth( widths[2] )
         self._layout.addWidget( self._labelId  )
         self._layout.addWidget( self._labelPassText  )
         self._layout.addWidget( self._labelPass  )
@@ -148,21 +205,30 @@ class KeyItem( QWidget ):
         self.setLayout( self._layout )
 
     def getPass( self ):
+        """
+        Returns password
+        """
         return self._labelPass.text()
 
     def getId( self ):
+        """
+        Returns uid of key
+        """
         return self._id
 
-    def setIdWidth( self, width ):
-        self._labelId.setMaximumWidth( width )
-
 class Refresher( QWidget ):
+    """
+    Grafic representation of refresh form.
+    """
     def __init__( self, parent ):
         super().__init__( parent )
         self.initUI()
         self._parent = parent
 
     def initUI( self ):
+        """
+        Inits UI (size, widgets, fots, etc.)
+        """
         font = QFont()
         font.setBold( True )
         header = QLabel( 'Refresh Keys', self )
@@ -209,23 +275,27 @@ class Refresher( QWidget ):
         self._sudoChck.toggled.connect( self.toggleChck )
         self._homeChck.toggled.connect( self.toggleChck )
 
-        self._button = QPushButton( "Refresh" )
-        self._button.setMaximumWidth( 80 )
-        self._button.clicked.connect( self.refresh )
+        button = QPushButton( "Refresh" )
+        button.setMaximumWidth( 80 )
+        button.clicked.connect( self.refresh )
 
-        self._layout = QBoxLayout( QBoxLayout.TopToBottom, parent = self )
-        self._layout.setSpacing(5)
-        self._layout.setContentsMargins( 0, 0, 0, 0 )
-        self.setLayout( self._layout )
-        self._layout.addWidget( header )
-        self._layout.addWidget( self._sudoChck )
-        self._layout.addWidget( self._homeChck )
-        self._layout.addWidget( self._sudoWidget )
-        self._layout.addWidget( self._homeWidget )
-        self._layout.addWidget( self._button )
-        self._layout.addStretch( 1 )
+        layout = QBoxLayout( QBoxLayout.TopToBottom, parent = self )
+        layout.setSpacing(5)
+        layout.setContentsMargins( 0, 0, 0, 0 )
+        self.setLayout( layout )
+        layout.addWidget( header )
+        layout.addWidget( self._sudoChck )
+        layout.addWidget( self._homeChck )
+        layout.addWidget( self._sudoWidget )
+        layout.addWidget( self._homeWidget )
+        layout.addWidget( button )
+        layout.addStretch( 1 )
 
     def refresh( self ):
+        """
+        Notifies parent when refresh button is pressed.
+        """
+
         useSudo = self._sudoChck.isChecked()
         sudo    = self._sudo.text() if useSudo else None
         useHome = self._homeChck.isChecked()
@@ -238,11 +308,19 @@ class Refresher( QWidget ):
         self._parent.notifyBackend( message )
 
     def selectDir( self ):
+        """
+        Displays dialogue to selecet directory.
+        """
+
         homedir = QFileDialog.getExistingDirectory( self, "Select GPG Homedir", self._homedirLabel.text(), QFileDialog.ReadOnly )
         if ( homedir ):
             self._homedirLabel.setText( homedir )
 
     def toggleChck( self ):
+        """
+        Display/hide sudo and homedir edit lines.
+        """
+
         if ( self._sudoChck.isChecked() ):
             self._sudoWidget.show()
         else:
