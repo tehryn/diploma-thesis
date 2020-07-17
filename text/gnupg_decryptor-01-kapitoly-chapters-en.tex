@@ -336,9 +336,9 @@ Once both extension manifest and host manifest are correctly set, the extension 
 \end{figure}
 
 \chapter{Iterative Development}
-The goal of this thesis is to implement a browser extension that will detect encrypted elements on a web page and decrypt them. Developing a software is a complex and demanding process and it is not easy to deliver a project that correspondents with stakeholder's expectation. To fulfil all expectation, the bowser extension will be developed in several iterations.
+The goal of this thesis is to implement a browser extension that will detect encrypted elements on a web page and decrypt them. Developing a software is a complex and demanding process and it is not easy to deliver a project that correspondents with stakeholder's expectation. To fulfil all expectation, the bowser extension was developed in several iterations.
 
-Each iteration will consist of design, development, testing and review. The iteration will be usually 2 -- 3 weeks long and will result in a prototype. The prototype will be then disgusted with thesis supervisor -- Ing. Libor Polčák, Ph.D.
+Each iteration consists of design, development, testing and review. The iteration were be usually 3 -- 4 weeks long and resulted into a prototype. The prototype were then disgusted with thesis supervisor -- Ing. Libor Polčák, Ph.D.
 
 \begin{figure}[H]
     \begin{center}
@@ -348,14 +348,14 @@ Each iteration will consist of design, development, testing and review. The iter
     \end{center}
 \end{figure}
 
-Each iteration will be described in the thesis from various reasons. During prototype development, new problems that were missed in the software design can occur. Also, some of the used technologies and methods can lead to a dead--end or lose their purpose in the future prototypes or the final product. Such methods or technologies might not be important for the final product of the thesis, but can be important for some readers.
+Each iteration is described in the thesis from various reasons. During prototype development, new problems that were missed in the software design can occur. Also, some of the used technologies and methods can lead to a dead--end or lose their purpose in the future prototypes or the final product. Such methods or technologies might not be important for the final product of the thesis, but can be important for some readers.
 
 \section{OpenPGP.js Prototype}
 \label{prototype:OpenPGPjs}
-The purpose of the first prototype was to learn how to develop a browser extension. The goal was to implement a simple browser extension that will be able to decrypt images using a hardcoded private key. Ideal library for this task was \textit{OpenPGP.js} (Section \ref{text:openpgpjs}) and since the Firefox browser had troubles to load the \textit{OpenPGP.js} library, this prototype was implemented for the Google Chrome browser.
+The purpose of the first prototype is to learn how to develop a browser extension. The goal is to implement a simple browser extension that will be able to decrypt images using a hardcoded private key. Ideal library for this task was \textit{OpenPGP.js} (Section \ref{text:openpgpjs}) and since the Firefox browser has troubles to load the \textit{OpenPGP.js} library, this prototype is implemented for the Google Chrome browser.
 
 \subsection{Design}
-No background script or native application was needed to develop so new script -- called \textit{gnupg\_decryptor.js}, and \textit{OpenPGP.js} library could be loaded as content scripts. The designated schema of the web extension can be seen in the figure \ref{img:openpgpAnatomy}. Script \textit{gnupg\_decryptor.js} will detect encrypted image by file suffix in its source URL, downloads it, and tries to decrypt it using \textit{OpenPGP.js} library. Once the content of the image is decrypted, \textit{gnupg\_decryptor.js} will create a new URL pointing to the decrypted image and replace the source URL of \textit{img} element on the web page thus displaying the decrypted image to a user. The icon that represents the extension was taken from \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
+No background script or native application is needed to develop so new script -- called \textit{gnupg\_decryptor.js}, and \textit{OpenPGP.js} library can be loaded as content scripts. The designated schema of the web extension can be seen in the figure \ref{img:openpgpAnatomy}. Script \textit{gnupg\_decryptor.js} will detect encrypted image by file suffix in its source URL, downloads it, and tries to decrypt it using \textit{OpenPGP.js} library. Once the content of the image is decrypted, \textit{gnupg\_decryptor.js} will create a new URL pointing to the decrypted image and replace the source URL of \textit{img} element on the web page thus displaying the decrypted image to a user. The icon that represents the extension is taken from \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
 
 \begin{figure}[H]
     \begin{center}
@@ -366,7 +366,7 @@ No background script or native application was needed to develop so new script -
 \end{figure}
 
 \subsection{Implementation}
-Since some parts of this prototype will serve as a foundation stone for next development, special care was taken for reusability of useful functions as well as for preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that the schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content scripts).
+Since some parts of this prototype serves as a foundation stone for next development, special care was taken for reusability of useful functions as well as for preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that the schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content scripts).
 \begin{figure}[H]
     \begin{center}
         \label{img:openpgp-sequence}
@@ -377,13 +377,13 @@ Since some parts of this prototype will serve as a foundation stone for next dev
 
 
 \subsection{Review}
-The implemented prototype was able to detect images on a web page by their source URL and then decrypt them using the \textit{OpenPGP.js} library. The Prototype was able to use only hardcoded keys and could not access user's keyring on his computer. The prototype did not need any background scripts or native application. The only browser, where was implemented extension operational, was Google Chrome.
+The implemented prototype is able to detect images on a web page by their source URL and then decrypt them using the \textit{OpenPGP.js} library. The Prototype is able to use only hardcoded keys and can not access user's keyring on his computer. The prototype did not need any background scripts or native application. The only browser, where is implemented prototype operational, is Google Chrome.
 
-Some functions implemented in this prototype will be included in future prototypes and maybe in a final product of the thesis. The main benefits from the first iteration were implemented test pages, encrypted images, generated keypairs and gained experience with web extension development.
+Some functions implemented in this prototype are included in future prototypes and in a final product of the thesis as well. The main benefits from the first iteration are implemented test pages, encrypted images, generated keypairs and gained experience with web extension development.
 
 \section{GnuPG\_Decryptor Prototype}
 \label{prototype:GnuPG_Decryptor}
-Hardcoded keys were one of the biggest problems of the previous prototype. A new prototype should have access to users keyring. In order to access it, it will be necessary to implement a native application that will be able to communicate with the gpg application. With the native application, the \textit{OpenPGP.js} library will no longer be necessary and all decryption tasks will handle gpg itself.
+Hardcoded keys are one of the biggest problems of the previous prototype. A new prototype should have access to users keyring. In order to access it, it will be necessary to implement a native application that will be able to communicate with the gpg application. With the native application, the \textit{OpenPGP.js} library will no longer be necessary and all decryption tasks will handle gpg itself.
 
 \subsection{Design}
 Content script (\textit{gnupg\_decryptor.js}) will start the communication with a background script. The background script will serve only as an intermediator and will resend messages from the content script to a native application. The native application will be implemented in Python language and will communicate with gpg using the \textit{subprocess} library. Since a user must provide passphrase to a private key, the native application will have a user interface as well. The user interface will be implemented using the \textit{tkinter} library. All used Python libraries are showned on the figure \ref{img:gnupg_decryptorAnatomy}.
@@ -401,9 +401,9 @@ Decoded content will be sent to the background script and it will resend it to t
 Messages must be in JSON format. All messages will have a mandatory field \textit{type} that will describe the type of message. In this prototype, supported types will be \textit{decryptResponse, decryptRequest, and debug}. A message with type \textit{decryptRequest} will have mandatory fields \textit{messageId} containing the ID of an encrypted element on a web page, \textit{data} containing encrypted data, and \textit{encoding} specifying which encoding was used to encode the content of field \textit{data}. A message of type \textit{decryptResponse} will have mandatory fields \textit{success} specifing if the decryption was successful, \textit{data} containing base64 string with decrypted content (or an empty string if failed), \textit{message} containing an error message if decryption failed (or an empty string on success), and \textit{messageId} containing the ID of \textit{decryptRequest} message to which the response relates.
 
 \subsection{Implementation}
-Purpose of this prototype was the implementation of a messaging system that will be used in future development. The messaging system simplifies debugging of the native application by supporting debug messages and the messaging system is extensible and reusable although the messaging system is still incomplete.
+Purpose of this prototype is the implementation of a messaging system that will be used in future prototypes and final product. The messaging system simplifies debugging of the native application by supporting debug messages and the messaging system is extensible and reusable although the messaging system is still incomplete.
 
-The native application was implemented as simple as possible. Application has two dialogues to enter the passwords -- password for sudo to access user's keyring and for a passphrase to decrypt the private key. The application does support decryption with using only one encrypted key and does not resolve errors reported by sudo or gpg itself. A simplified schema of the implemented prototype can be seen on the figure \ref{img:gnupg_decryptor-sequence} (Note that schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content script, the background script, the native application and the GnuPG application).
+The native application is implemented as simple as possible. Application has two dialogues to enter the passwords -- password for sudo to access user's keyring and for a passphrase to decrypt the private key. The application does support decryption with using only one encrypted key and does not resolve errors reported by sudo or gpg itself. A simplified schema of the implemented prototype can be seen on the figure \ref{img:gnupg_decryptor-sequence} (Note that schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content script, the background script, the native application and the GnuPG application).
 
 \begin{figure}[H]
     \begin{center}
@@ -416,17 +416,52 @@ The native application was implemented as simple as possible. Application has tw
 \subsection{Review}
 The implemented prototype can access to a certain extent user's keyring. Using the messaging system, the extension is able to exchange data between the gpg application installed on a user's computer and a web browser thus enabling usage of gpg for decryption. Through messaging system is incomplete, the GnuPG\_Decryptor prototype offers sufficient basis for future development.
 
-Future prototypes must complete messaging system -- there is missing functionality dealing with the limited size of messages and maximum size of exchanged content. The user interface provided by the native application is also insufficient and must be improved in order to use multiple keys for decryption and do not require sudo password, if not necessary. The native application also needs to deal with errors occurs during the data decryption and somehow informs the user about the error.
+Future prototypes must complete messaging system -- there is missing functionality dealing with the limited size of messages. The user interface provided by the native application is also insufficient and must be improved in order to use multiple keys for decryption and do not require sudo password, if not necessary. The native application also needs to deal with errors occurs during the data decryption and somehow informs the user about the error.
 
 \section{Large Content Support}
+In native messaging, the maximum size of a single message sent from the native application is 1\,MB and the maximum size of a message sent from the background script is 4\,GB. Because of these limits, it is necessary to send large content in separate messages. So it is necessary to make changes in the messaging system on both sides of the communication.
+
 \subsection{Design}
+To support the limited size of a single message, all types of messages will have mandatory elements \textit{messageId} and \textit{lastBlock}. If a message would exceed the maximum size, its data will be split into blocks and each block will be sent with separately with the same \textit{messageId}. The field \textit{lastBlock} will be set to value 1 in case of the last block otherwise to 0.
+
+The maximum size of the \textit{data} part of \textit{decryptRequest} message will be set to a maximum of 75\,\% of a maximum size of the whole message (3\,GB), so there is more than enough space for other attributes of the message. Dividing data into blocks will be handled by the content script, so the background script can only forward messages to the native application.
+
+Since there is no other choice, large content sent by the native application will be split into blocks by the native application itself. As it is inthe  content script, the maximum size of the \textit{data} part of the \textit{decryptResponse} message will be set to 75\,\% (750\,KB) of the maximum size of the whole message. This will ensure that there will be enough space for the rest fo message attributes.
+
 \subsection{Implementation}
+The messaging system was updated as designed -- attribute \textit{messageId} is now mandatory as well as new mandatory attribute \textit{lastBlock}. The size of the \textit{data} part of \textit{decryptRequest} message is computed as length of base64 string or armoured text (in both cases, one character has a size of one byte) and if it is necessary, the string is split. In the case of the native application, size of the \textit{data} part of the \textit{decryptResponse} message is computed as a number of bytes (and data are then divided if needed).
+
+Example of decrypting large content is shown on the figure \ref{img:messageDraft}.
+\begin{figure}[H]
+    \begin{center}
+        \label{img:messageDraft}
+        \includegraphics[width=1.3\textwidth,angle=90]{obrazky-figures/sequence-messageDesign.png}
+        \caption{An example of decrypting too large content to be sent in a single message.}
+    \end{center}
+\end{figure}
+
 \subsection{Review}
+The browser extension is now able to decrypt files of any size, thus allowing usage of large files like high-resolution images, audio tracks or even videos. But the extension is not able to detect any dynamic changes in DOM of a web page, so it is not able to appropriately react to changes made by other scripts or to work properly work with XHR API, Fetch API or Push API.
 
 \section{Interactive Changes Support}
+To support XHR API, Fetch API and Push API, it is necessary to somehow detect changes in the DOM tree of a web document. For this purpose, the Web API implements a \textit{MutationObserver} interface. With the usage of the \textit{MutationObserver} interface, the browser extension will be able to watch changes being made to DOM tree of a web document.
+
 \subsection{Design}
+The content script will be responsible for using the \textit{MutationObserver}. The \textit{MutationObserver} need to be connected to the root node of the DOM tree, so it will detect all the changes in the DOM tree of a web document. Once some change occurs, the content script needs to locate all changed or new elements and detects which of them (if any) contains encrypted data.
+
+To ensure, that same elements will not be detected multiple times, this prototype will also stores detected elements and data, so same encrypted data are not sent to the native application for deduplication multiple times. To prevent possible high memory demands, this data will be stored in the content script.
+
 \subsection{Implementation}
+Both the \textit{MutationObserver} connection and duplicities detection are implemented in the content script. Once a web page is loaded, the content script connects the \textit{MutationObserver} to the \textit{document.documentElement} (root element of the web document) to detect any changes in the content of elements, the tree structure of DOM or the \textit{src} attribute of any element. If a new subtree is detected, the root of the subtree will be parsed by function, that will check the root itself and all of its descendants for encrypted content. The \textit{MutationObserver} will also detect changes made by the browser extension itself and will test inserted content to the page as well. Thanks to this feature, the web browser extension is able to decrypt content, that was encrypted multiple times using multiple keys (or the same key multiple times). Each parsed content is stored in the associative array. Index to the array is either hash of encrypted content (in case of armoured text) or URL to an encrypted file.
+
+In the case of armoured text, stored data are \textit{status}, \textit{type}, \textit{data} and \textit{elements}. The attribute \textit{type} is always set to value \texttt{text}. If the value of the \textit{status} is \texttt{decrypted}, the attribute \textit{data} contains decrypted data. Otherwise, the value of \textit{status} is \texttt{decryptRequest}, meaning that encrypted data were already sent to the native application and decrypted content is not yet available. The attribute \textit{elements} contains a list of element ids, that uniquely identifies elements, which shares the same encrypted content. If the encrypted text (in the format of PGP armoured text) is detected, a hash is computed. Then it is tested if the hash is already used as string index into the associative array and if not, new data are inserted into the array and encrypted content is then sent to the native application. Otherwise the content of the element is replaced (if encrypted data are already available) or appended to the list of elements with the same content for future processing.
+
+Encrypted files are in the associative array stored similar way as the armoured text. Stored data are \textit{status}, \textit{type}, \textit{url} and \textit{elements}. The attribute \textit{type} is always set to value \texttt{file}. If the value of the attribute \textit{status} is \texttt{decrypted}, the attribute \textit{url} contains URL to a decrypted file, otherwise, the \textit{url} points to an encrypted file. Unlike in the case of armoured text, \textit{status} can contain two more values -- \texttt{creatingRequset} and \texttt{decryptRequest}, depending on a situation -- if the file was already downloaded and forwarded to the native application (then the value is \texttt{decryptRequest}), or is being currently downloaded (then the value is \texttt{creatingRequset}). If an encrypted file is detected, it is processed the same way as in the case of armoured text, except the URL is used as a key to access array, instead of a hash.
+
 \subsection{Review}
+The implemented prototype is able to work properly with XHR API, Fetch API, Push API or any other API or javascript module that can interactively change the content of a web page. The prototype is even capable of decrypting content, that is encrypted multiple times with multiple keys (as long as these keys are protected with the same password, or are not protected by password at all). Furthermore, a number of exchanged messages might be even smaller than in the previous prototype thanks to the new deduplication system.
+
+But the newest prototype still lacks usable GUI. Current GUI is too simple and lacks support to enter different passwords for different keys, thus making this prototype still not suitable to be published on the Mozilla addons page.
 
 \section{Graphic User Interface}
 \subsection{Design}
