@@ -1,0 +1,29 @@
+.frame {
+    border-style: solid;
+}
+
+.menu {
+    width: 100%;
+    background-color: #363636;
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+}
+
+.menu a {
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    float:   left;
+    color:   #f2f2f2;
+    padding: 10px;
+}
+
+.menu a:hover {
+  background: silver;
+  color: black;
+}
+
+.content {
+  margin-top: 40px;
+}

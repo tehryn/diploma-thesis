@@ -48,7 +48,7 @@ As mentioned earlier, the GnuPG is the implementation of the \textit{OpenPGP} st
     \end{center}
 \end{figure}
 
-A symmetric key, that is used for message encryption, can be derived from a passphrase (or different kind of shared secret), or a two--stage mechanism similar to the public--key method that was described above, in which a session key itself is encrypted with a symmetric algorithm keyed from a shared secret.
+The symmetric key, that is used for message encryption, can be derived from a passphrase (or different kind of shared secret), or a two--stage mechanism similar to the public--key method that was described above, in which a session key itself is encrypted with a symmetric algorithm keyed from a shared secret.
 
 Authentication can be achieved using a digital signature. The digital signature uses a hash code or a message digest algorithm and a public--key signature algorithm. The sequence is as follows (also described in the figure \ref{img:messageSignature}):
 \begin{enumerate}
@@ -73,13 +73,13 @@ Both confidentiality and signature services may be applied to the same message. 
 \section{GnuPG for Linux distributions}
 As described above, there is a Linux application called gpg. It is important to have this application installed and configurated, otherwise implemented software in this thesis will not work correctly, or will not work at all. The reason for this is a fact, that GnuPG is not only used for decryption of encrypted elements but solves problems of the key management as well. Furthermore, the gpg application can be used for encryption of web pages.
 
-Installation of the GnuPG may differ on different operating systems. Some GNU/Linux distribution may already come with directly installable packages. However, it is worth considering installation from the source code because the version of these packages may be old. The list of different GnuPG packages, libraries, required tools, optional software, legacy versions of GnuPG or manual can be found on \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
+Installation of the GnuPG may differ on different operating systems. Some of the GNU/Linux distribution may already come with directly installable packages. However, it is worth considering installation from the source code because the version of these packages may be old. The list of different GnuPG packages, libraries, required tools, optional software, legacy versions of GnuPG or manual can be found on \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
 
 \subsection{Basic Key Management}
 Since objects are signed using the receiver's public key and decrypted with the receiver's private key, it is clear that the receiver must have this keypair. The keypair is not only needed to encrypt the messages but also to sign them. With gpg installed on user's machine, the user can generate its own private and public keys. Basic key management will be described in these steps:
 \begin{enumerate}
-    \item Generating a new pair of private and public key
-    \item Importing and exporting of both private and public keys
+    \item Generating a new pair of private and public key.
+    \item Importing and exporting of both private and public keys.
 \end{enumerate}
 
 \subsection*{Generating a New Pair of Private and Public Key}
@@ -267,11 +267,11 @@ The manifest can also include pointers to several other types of files:
     \item Sidebars, popups, and option pages
     \item Web--accessible resources
 \end{enumerate}
-\begin{figure}[H]
+\begin{figure}
     \begin{center}
         \label{img:extensionAnatomy}
         \includegraphics[width=1.0\textwidth]{obrazky-figures/webextension-anatomy.png}
-        \caption{Anatomy of a broswer extension \cite{extensionAnatomy}.}
+        \caption{Anatomy of a browser extension \cite{extensionAnatomy}.}
     \end{center}
 \end{figure}
 
@@ -318,7 +318,7 @@ Sometimes it is needed to provide resources (images, HTML, CSS, JavaScript, etc.
 Note that if a page is made web--accessible, any website may link or redirect to that page. Therefore, web--accessible pages should treat any input as if it came from an untrusted source.
 
 \subsection{Extension Pages}
-Extension pages are HTML documents in broswer extension that are not attached to some predefined user interface components. Extension pages do not have entry in the manifest file unlike sidebars, popups or option pages. However, they also get access to the same privileged WebExtension APIs as the background script.
+Extension pages are HTML documents in browser extension that are not attached to some predefined user interface components. Extension pages do not have entry in the manifest file unlike sidebars, popups or option pages. However, they also get access to the same privileged WebExtension APIs as the background script.
 
 \section{Native Applications}
 A native application is installed using the underlying operating system's installation machinery. A browser can communicate with the native application via a native messaging mechanism. This enables an extension to exchange messages with the native application installed on the user's computer. Thanks to this mechanism, native applications can provide services to extensions without needing to be reachable over the web. Another feature provided by the native application is that they can enable to access resources that are not accessible through WebExtension APIs, such as hardware.
@@ -338,7 +338,7 @@ Once both extension manifest and host manifest are correctly set, the extension 
 \chapter{Iterative Development}
 The goal of this thesis is to implement a browser extension that will detect encrypted elements on a web page and decrypt them. Developing a software is a complex and demanding process and it is not easy to deliver a project that correspondents with stakeholder's expectation. To fulfil all expectation, the bowser extension was developed in several iterations.
 
-Each iteration consists of design, development, testing and review. The iteration were be usually 3 -- 4 weeks long and resulted into a prototype. The prototype were then disgusted with thesis supervisor -- Ing. Libor Polčák, Ph.D.
+Each iteration consists of design, development, testing and review. The iteration were usually 3 -- 4 weeks long and resulted into a prototype. The prototype were then disgusted with thesis supervisor -- Ing. Libor Polčák, Ph.D.
 
 \begin{figure}[H]
     \begin{center}
@@ -355,7 +355,7 @@ Each iteration is described in the thesis from various reasons. During prototype
 The purpose of the first prototype is to learn how to develop a browser extension. The goal is to implement a simple browser extension that will be able to decrypt images using a hardcoded private key. Ideal library for this task was \textit{OpenPGP.js} (Section \ref{text:openpgpjs}) and since the Firefox browser has troubles to load the \textit{OpenPGP.js} library, this prototype is implemented for the Google Chrome browser.
 
 \subsection{Design}
-No background script or native application is needed to develop so new script -- called \textit{gnupg\_decryptor.js}, and \textit{OpenPGP.js} library can be loaded as content scripts. The designated schema of the web extension can be seen in the figure \ref{img:openpgpAnatomy}. Script \textit{gnupg\_decryptor.js} will detect encrypted image by file suffix in its source URL, downloads it, and tries to decrypt it using \textit{OpenPGP.js} library. Once the content of the image is decrypted, \textit{gnupg\_decryptor.js} will create a new URL pointing to the decrypted image and replace the source URL of \textit{img} element on the web page thus displaying the decrypted image to a user. The icon that represents the extension is taken from \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
+No background script or native application is needed to develop so new script called \textit{gnupg\_decryptor.js} and the \textit{OpenPGP.js} library can be loaded as content scripts. The designated schema of the web extension can be seen in the figure \ref{img:openpgpAnatomy}. The script \textit{gnupg\_decryptor.js} will detect encrypted image by file suffix in its source URL, downloads it, and tries to decrypt it using \textit{OpenPGP.js} library. Once the content of the image is decrypted, \textit{gnupg\_decryptor.js} will create a new URL pointing to the decrypted image and replace the source URL of \textit{img} element on the web page thus displaying the decrypted image to a user. The icon that represents the extension is taken from \textit{The GNU Privacy Guard Project} web page \cite{GnuPG}.
 
 \begin{figure}[H]
     \begin{center}
@@ -366,18 +366,10 @@ No background script or native application is needed to develop so new script --
 \end{figure}
 
 \subsection{Implementation}
-Since some parts of this prototype serves as a foundation stone for next development, special care was taken for reusability of useful functions as well as for preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} (Note that the schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content scripts).
-\begin{figure}[H]
-    \begin{center}
-        \label{img:openpgp-sequence}
-        \includegraphics[width=1.3\textwidth,angle=90]{obrazky-figures/openpgp-sequence.png}
-        \caption{Communication between the content scripts of \textit{OpenPGP.js} prototype.}
-    \end{center}
-\end{figure}
-
+Since some parts of this prototype serves as a foundation stone for next development, special care was taken for reusability of useful functions as well as for preparing testing web pages, a different set of encrypted data and also to prepare special scenarios, specifically another web extension that changes DOM of a web page. Simplified schema of the implemented prototype can be seen on the figure \ref{img:openpgp-sequence} in the appendix section of the thesis.
 
 \subsection{Review}
-The implemented prototype is able to detect images on a web page by their source URL and then decrypt them using the \textit{OpenPGP.js} library. The Prototype is able to use only hardcoded keys and can not access user's keyring on his computer. The prototype did not need any background scripts or native application. The only browser, where is implemented prototype operational, is Google Chrome.
+The implemented prototype is able to detect images on a web page by their source URL and then decrypt them using the \textit{OpenPGP.js} library. The Prototype is able to use only hardcoded keys and can not access user's keyring on his computer. The prototype does not need any background scripts or a native application. The only browser, where is implemented prototype operational, is Google Chrome.
 
 Some functions implemented in this prototype are included in future prototypes and in a final product of the thesis as well. The main benefits from the first iteration are implemented test pages, encrypted images, generated keypairs and gained experience with web extension development.
 
@@ -403,15 +395,7 @@ Messages must be in JSON format. All messages will have a mandatory field \texti
 \subsection{Implementation}
 Purpose of this prototype is the implementation of a messaging system that will be used in future prototypes and final product. The messaging system simplifies debugging of the native application by supporting debug messages and the messaging system is extensible and reusable although the messaging system is still incomplete.
 
-The native application is implemented as simple as possible. Application has two dialogues to enter the passwords -- password for sudo to access user's keyring and for a passphrase to decrypt the private key. The application does support decryption with using only one encrypted key and does not resolve errors reported by sudo or gpg itself. A simplified schema of the implemented prototype can be seen on the figure \ref{img:gnupg_decryptor-sequence} (Note that schema does not show communication between objects, as usually a sequence diagram does, but it shows communication between the content script, the background script, the native application and the GnuPG application).
-
-\begin{figure}[H]
-    \begin{center}
-        \label{img:gnupg_decryptor-sequence}
-        \includegraphics[width=1.3\textwidth,angle=90]{obrazky-figures/sequence-gnupg_decryptor.png}
-        \caption{Communication between the web extension, the native application, and the GnuPG application.}
-    \end{center}
-\end{figure}
+The native application is implemented as simple as possible. Application has two dialogues to enter the passwords -- password for sudo to access user's keyring and for a passphrase to decrypt the private key. The application does support decryption with using only one encrypted key and does not resolve errors reported by sudo or gpg itself.
 
 \subsection{Review}
 The implemented prototype can access to a certain extent user's keyring. Using the messaging system, the extension is able to exchange data between the gpg application installed on a user's computer and a web browser thus enabling usage of gpg for decryption. Through messaging system is incomplete, the GnuPG\_Decryptor prototype offers sufficient basis for future development.
@@ -419,6 +403,7 @@ The implemented prototype can access to a certain extent user's keyring. Using t
 Future prototypes must complete messaging system -- there is missing functionality dealing with the limited size of messages. The user interface provided by the native application is also insufficient and must be improved in order to use multiple keys for decryption and do not require sudo password, if not necessary. The native application also needs to deal with errors occurs during the data decryption and somehow informs the user about the error.
 
 \section{Large Content Support}
+\label{sec:largeContent}
 In native messaging, the maximum size of a single message sent from the native application is 1\,MB and the maximum size of a message sent from the background script is 4\,GB. Because of these limits, it is necessary to send large content in separate messages. So it is necessary to make changes in the messaging system on both sides of the communication.
 
 \subsection{Design}
@@ -429,16 +414,7 @@ The maximum size of the \textit{data} part of \textit{decryptRequest} message wi
 Since there is no other choice, large content sent by the native application will be split into blocks by the native application itself. As it is inthe  content script, the maximum size of the \textit{data} part of the \textit{decryptResponse} message will be set to 75\,\% (750\,KB) of the maximum size of the whole message. This will ensure that there will be enough space for the rest fo message attributes.
 
 \subsection{Implementation}
-The messaging system was updated as designed -- attribute \textit{messageId} is now mandatory as well as new mandatory attribute \textit{lastBlock}. The size of the \textit{data} part of \textit{decryptRequest} message is computed as length of base64 string or armoured text (in both cases, one character has a size of one byte) and if it is necessary, the string is split. In the case of the native application, size of the \textit{data} part of the \textit{decryptResponse} message is computed as a number of bytes (and data are then divided if needed).
-
-Example of decrypting large content is shown on the figure \ref{img:messageDraft}.
-\begin{figure}[H]
-    \begin{center}
-        \label{img:messageDraft}
-        \includegraphics[width=1.3\textwidth,angle=90]{obrazky-figures/sequence-messageDesign.png}
-        \caption{An example of decrypting too large content to be sent in a single message.}
-    \end{center}
-\end{figure}
+The messaging system was updated as designed -- attribute \textit{messageId} is now mandatory as well as new mandatory attribute \textit{lastBlock}. The size of the \textit{data} part of \textit{decryptRequest} message is computed as length of base64 string or armoured text (in both cases, one character has a size of one byte) and if it is necessary, the string is split. In the case of the native application, size of the \textit{data} part of the \textit{decryptResponse} message is computed as a number of bytes (and data are then divided if needed). An example of decrypting large content is shown on the figure \ref{img:largeContent} in the appendix section of the thesis.
 
 \subsection{Review}
 The browser extension is now able to decrypt files of any size, thus allowing usage of large files like high-resolution images, audio tracks or even videos. But the extension is not able to detect any dynamic changes in DOM of a web page, so it is not able to appropriately react to changes made by other scripts or to work properly work with XHR API, Fetch API or Push API.
@@ -454,7 +430,7 @@ To ensure, that same elements will not be detected multiple times, this prototyp
 \subsection{Implementation}
 Both the \textit{MutationObserver} connection and duplicities detection are implemented in the content script. Once a web page is loaded, the content script connects the \textit{MutationObserver} to the \textit{document.documentElement} (root element of the web document) to detect any changes in the content of elements, the tree structure of DOM or the \textit{src} attribute of any element. If a new subtree is detected, the root of the subtree will be parsed by function, that will check the root itself and all of its descendants for encrypted content. The \textit{MutationObserver} will also detect changes made by the browser extension itself and will test inserted content to the page as well. Thanks to this feature, the web browser extension is able to decrypt content, that was encrypted multiple times using multiple keys (or the same key multiple times). Each parsed content is stored in the associative array. Index to the array is either hash of encrypted content (in case of armoured text) or URL to an encrypted file.
 
-In the case of armoured text, stored data are \textit{status}, \textit{type}, \textit{data} and \textit{elements}. The attribute \textit{type} is always set to value \texttt{text}. If the value of the \textit{status} is \texttt{decrypted}, the attribute \textit{data} contains decrypted data. Otherwise, the value of \textit{status} is \texttt{decryptRequest}, meaning that encrypted data were already sent to the native application and decrypted content is not yet available. The attribute \textit{elements} contains a list of element ids, that uniquely identifies elements, which shares the same encrypted content. If the encrypted text (in the format of PGP armoured text) is detected, a hash is computed. Then it is tested if the hash is already used as string index into the associative array and if not, new data are inserted into the array and encrypted content is then sent to the native application. Otherwise the content of the element is replaced (if encrypted data are already available) or appended to the list of elements with the same content for future processing.
+In the case of armoured text, stored data are \textit{status}, \textit{type}, \textit{data} and \textit{elements}. The attribute \textit{type} is always set to value \texttt{text}. If the value of the \textit{status} is \texttt{decrypted}, the attribute \textit{data} contains decrypted data. Otherwise, the value of \textit{status} is \texttt{decryptRequest}, meaning that encrypted data were already sent to the native application and decrypted content is not available yet. The attribute \textit{elements} contains a list of element ids, that uniquely identifies elements, which shares the same encrypted content. If the encrypted text (in the format of PGP armoured text) is detected, a hash is computed. Then it is tested if the hash is already used as string index into the associative array and if not, new data are inserted into the array and encrypted content is then sent to the native application. Otherwise, the content of the element is replaced (if encrypted data are already available), or appended to the list of elements with the same content for future processing.
 
 Encrypted files are in the associative array stored similar way as the armoured text. Stored data are \textit{status}, \textit{type}, \textit{url} and \textit{elements}. The attribute \textit{type} is always set to value \texttt{file}. If the value of the attribute \textit{status} is \texttt{decrypted}, the attribute \textit{url} contains URL to a decrypted file, otherwise, the \textit{url} points to an encrypted file. Unlike in the case of armoured text, \textit{status} can contain two more values -- \texttt{creatingRequset} and \texttt{decryptRequest}, depending on a situation -- if the file was already downloaded and forwarded to the native application (then the value is \texttt{decryptRequest}), or is being currently downloaded (then the value is \texttt{creatingRequset}). If an encrypted file is detected, it is processed the same way as in the case of armoured text, except the URL is used as a key to access array, instead of a hash.
 
@@ -464,33 +440,799 @@ The implemented prototype is able to work properly with XHR API, Fetch API, Push
 But the newest prototype still lacks usable GUI. Current GUI is too simple and lacks support to enter different passwords for different keys, thus making this prototype still not suitable to be published on the Mozilla addons page.
 
 \section{Graphic User Interface}
+\label{prototype:gui}
+Missing or insufficient graphic user interface greatly reduces the usability of this browser extension. Current GUI is too simple and requires two passwords -- sudo and the password of the key, both are mandatory. But the user interface also needs to collect necessary parameters for GnuPG application like homedir. User can also have multiple private keys and GUI needs to have entries for a password of every key, the user might want to use.
+
 \subsection{Design}
+The user interface will support multiple password entries for different private keys. There will be also entries for sudo and homedir parameter. Providing sudo a password will not be mandatory anymore since a user might not have permission to use it. Homedir will not be mandatory as well (GnuPG will use default location). A draft of a simple and sufficient user interface, that will be implemented in this prototype, is shown on the figure \ref{img:userInterfaceDesign}. The graphic user interface will be displayed once the user clicks on the icon of the extension in a web browser.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:userInterfaceDesign}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/UI-design.png}
+        \caption{Draft of a user interface.}
+    \end{center}
+\end{figure}
+
+The previous graphic user interface was implemented using library \textit{tkinter}. In this iteration, this library will be replaced by \textit{PyQt5}. To make the implementation of the drafted user interface easier, a sketch was made, that is made only from \textit{PyQt5} classes (expect classes \textit{GnuPG\_Decryptor\_GUI}, \textit{KeyList}, \textit{KeyItem} and \textit{Refresher} -- but these classes only extend the \textit{Widget} class from \textit{PyQt5}). The created sketch can be seen on the figure \ref{img:userInterfaceImplementation}. With the new module and changed libraries, the structure of the web browser extension was changed and new structure can be seen on the figure \ref{img:guiPrototypeAnatomy}.
+
+\begin{figure}[]
+    \begin{center}
+        \label{img:userInterfaceImplementation}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/UI-implemented.png}
+        \caption{Structure of the implemented user interface.}
+    \end{center}
+\end{figure}
+
 \subsection{Implementation}
+The graphic user interface is implemented in the separated module named as \\ \textit{GnuPG\_Decryptor\_GUI.py}. The class \textit{GnuPG\_Decryptor\_GUI} contains a pointer to object of class \textit{GnuPG\_Decryptor} (a class that implements native application), so GUI can communicate with the backend. Furthermore, class \textit{GnuPG\_Decryptor\_GUI} contains references to two more classes -- the \textit{KeyList} class and the \textit{Refresher} class. The \textit{KeyList} contains all information about user keys. This information is held, displayed and can be edited by \textit{KeyItem} class. The \textit{KeyList} class can contain any number of objects of \textit{KeyItem} class. The \textit{Refresher} class contains information about the homedir parameter and usage of sudo. The \textit{Refresher} class is also responsible for showing these settings to the user and enabling its editing.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:guiPrototypeAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/prototype-GUI.png}
+        \caption{New structure of the web browser extension.}
+    \end{center}
+\end{figure}
+
 \subsection{Review}
+With the new graphic user interface, this prototype is functional and was successfully published on the Mozilla addons page. To complete the web browser extension, it is necessary to run a number of tests. Once the web browser extension is debugged, optimized and tested, the online documentation needs to be created and it is also necessary to publish the native application on some public web page.
 
 \section{Final Iteration}
+\label{prototype:finalProduct}
+The final iteration results in the final product of the thesis. Tests (Chapter \ref{test}) discovered two major bugs in the last implemented prototype -- unable to detect encrypted files in \textit{href} attribute and unable to work when the encrypted content is detected on more than one tab at the same tame. The final product must also support threads in the native application.
+
 \subsection{Design}
+The problem with the \textit{href} will be fixed in the content script. The content script will detect encrypted files in the \textit{href} attribute the same way as it detects files in the src attribute.
+
+The problems with encrypted content in more than one tab at the same time is caused in the background script -- the background script does not know, to which tab send the decrypted content. To resolve the problem, the content script will send to the background script a new \textit{tabIdRequest} message and the background script will response with a \textit{tabIdResponse} message, where the background script will provide the unique identification number for the content script. The number will be present in the mandatory attribute \textit{tabId} of \textit{decryptRquest} and \textit{decryptResponse} messages. The messaging system will be also updated with thee new messages -- \textit{updateKeysRequest}, \textit{getKeysRequest} and \textit{getKeysResponse}. These messages will be used to exchange the settings of the web browser extension so it can be saved (without the passwords) and it is not necessary to set everything at every start of a web browser (unless he needs to use sudo).
+
+Threading will be supported using the \textit{threading} library for python. The main process will read the messages and once the decryption will be requested and possible, it will create and start a new thread. The thread will then decrypt the data and send decrypted data to the content script. The function, that sends the data to the content script will be protected with a lock to prevent unexpected behaviour.
+
+The schema of the final product components can be seen on the figure \ref{img:finalProductAnatomy}. The example of the communication between the content script, the background script, the native application and the GnuPG application can be seen on the figure \ref{img:messageExample} in the appendix section of the thesis.
+
+\begin{figure}[H]
+    \begin{center}
+        \label{img:finalProductAnatomy}
+        \includegraphics[width=1.0\textwidth]{obrazky-figures/final-product-schema.png}
+        \caption{New structure of the web browser extension.}
+    \end{center}
+\end{figure}
+
 \subsection{Implementation}
+All of the components of the web browser extension were modified. The native application was modified to support the threads and new messages (\textit{updateKeysRequest} and \textit{updateKeysResponse}). Once the native application is launched, it sends \textit{updateKeysRequest} message to the background script. The background script loads settings from the storage and sends the settings back to the native application via \textit{updateKeysResponse} message.
+
+The \textit{getKeysRequest} message has only attribute \textit{type}. On the other hand, the \textit{getKeysResponse} and \textit{updateKeysResponse} messages have attributes \textit{homedir}, \textit{sudo} and \textit{keys}. The \textit{homedir} contains a string with \textit{homedir} directory (or is not specified if the \textit{homedir} parameter is not used), \textit{sudo} can only contain values 1 or 0. If the sudo should not be used, the value is 0 or the \textit{sudo} attribute is not specified. The attribute \textit{keys} is a list of string uids of the keys and the attribute is mandatory.
+
+The threads in the native application are used for data decryption and creation of \textit{decryptResponse} messages. The main process prepares data for a thread (detects keys, join blocks, decode base64 string, ...) and then create the thread that will handle the rest. While the thread is decrypting the data, the main process can read new messages and react to them.
+
+The content and background scripts were modified to support the \textit{tabIdRequest} and \textit{tabIdResponse} messages. Once the content script is loaded into the page, it sends the \textit{tabIdRequest} message and waits for the \textit{tabIdResponse} message from the background script. The \textit{tabIdRequest} has one mandatory attribute -- \textit{type}. The \textit{tabIdResponse} message has two mandatory attributes -- \textit{type} and \textit{tabId}. The \textit{tabId} contains the unique id for the content script that will be used, to determine to which tab the background script should forward the \textit{decryptResponse} message.
+
 \subsection{Review}
+The implemented browser extension was tested in all implemented tests (Section \ref{test}) and passed all of them. During the time measurements, we measured only effect of the threads on the time it took to display decrypted elements on the page. More about the results of measurements and influence of the threads can be seen in the section about the performance of the web browser extension (Sections \ref{test:performance} and \ref{test:performanceThreads}).
+
+The implemented extension was named as \textit{GnuPG Decryptor} and can be found on the Mozilla addon page\footnote{\url{https://addons.mozilla.org/cs/firefox/addon/gnupg\_decryptor/}}. Since it is possible to download only the extension on the Mozzila addon page and not the native application, a GitHub\footnote{\url{https://github.com/tehryn/GnuPG\_Decryptor/}} repository was created, where the user can download the native application. All source codes and tests were also published on the GitHub page.
+
+With this last iteration of the development process (the last one within this thesis), we created the web browser extension, that is able to detect and decrypt many encrypted elements on the page, such as text, HTML code, images, videos, audio tracks, styles, JavaScript or other pages and documents. The web browser extension is implemented for the Mozzila Firefox web browser and the native application is implemented for the GNU/Linux systems. In the future, the extension can be modified to support other browsers and the native application upgraded to support other operating systems.
 
 \chapter{Testing the Browser Extension}
+\label{test}
+This chapter focuses on testing and debugging the web browser extension. The goal of testing is to debug and optimize the \textit{Graphic user interface prototype} (Section \ref{prototype:gui}). The tested and debugged prototype will result in the final product of the thesis (Section \ref{prototype:finalProduct}). The final product will be then uploaded as a new version of the \textit{GnuPG Decryptor} extension on the Mozilla addons page.
+
+We will test three aspects of the software and each aspect will be described in the separate section:
+\begin{enumerate}
+    \item Basic Functions,
+    \item Advanced Functions,
+    \item Performance.
+\end{enumerate}
+
+All the test were performed on the device \textit{Acer Aspire VX15} with processor \textit{Intel Core i5-7300HQ (2.5GHz, TB\,3.5GHz)}. At the time of testing, the system installed on the computer was \textit{Ubuntu 18.04.4 LTS} and version of the Mozilla Firefox was 78.0.2.
+
 \section{Basic Functions}
+In this section, we will test the basic functions of the web browser extension, like how is extension capable of detecting encrypted elements and decrypting them. The testing  of the basic functions will be done in the following four steps:
+\begin{enumerate}
+    \item Element Detection,
+    \item Basic Decryption,
+    \item Large Files,
+    \item Interactive Changes.
+\end{enumerate}
+
+Since this section is about testing basic usage of the \textit{GnuPG Decryptor extension}, there will be only one test file per step and the tests will be as much simple as possible. We plan to perform more complex tests in the section Advanced Functions (Section \ref{test:advancedFunctions}).
+
 \subsection{Element Detection}
+\label{test:detection}
+The first thing, the implemented web browser extension does, is the detection of the encrypted elements. In the first test, we will create a web page with several encrypted images, audio tracks and videos and test, if the extension is able to detect them all and send then to the native application. Here is a simplified HTML schema:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 01</h1>
+    <p>Detection test of 17 images, 4 audio tracks and 4 videos
+       and 1 encrypted text.</p>
+    <div width="320px">
+      <img src=\textbf{"../encrypted/img/img1\_test1.jpg.gpg"} >
+      <img src=\textbf{"../encrypted/img/img2\_test1.jpg.gpg"} >
+      <!--15 more images follows-->
+    </div>
+    <div>
+      <audio controls>
+        <source
+          src=\textbf{"../encrypted/audio/audio1-test1.mp3.gpg"}
+          type="audio/mpeg"
+        >
+        Error - browser does not support mp3.
+      </audio>
+    </div>
+    <!--3 more audio tracks follows-->
+
+    <div>
+      <video width="320" height="240" controls>
+        <source
+          src=\textbf{"../encrypted/video/video4-test4.mp4.gpg"}
+          type="video/mp4"
+        >
+        Error - browser does not support mp4.
+      </video>
+    </div>
+    <!--3 more video tracks follows-->
+    <p>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv+N72od1JiuvcybR9b7z1WxtShsRm0B9pHDWJc8zB+s3sk}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </p>
+  </body>
+</html>
+\end{Verbatim}
+
+Once the web page was accessed by the browser with the \textit{GnuPG Decryptor} extension installed, the extensions detected 26 encrypted files and sent them into the native application for decryption, thus the web browser extension is capable of detecting encrypted images, audios and videos on such simple page and sends all the encrypted elements into the native application only once.
+
+Another element detection tests will be performed in the section where we will be testing interactive changes (Section \ref{test:interactive}) and in the section where recursive decryption will be tested (Section \ref{test:recursive}).
+
 \subsection{Basic Decryption}
+The next basic function, that will be tested is the decryption of small content -- encrypted text and small images. To test this basic feature, we created a simple page, similar to the one used before, but only with 17 images and encrypted text (no video and audio tracks). We expect from the web browser extension to detect and decrypt 18 elements and then display them to the user. Here is a simplified HTML schema of the web document used for testing:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 02</h1>
+    <p>Decryption test of 17 images and 1 encrypted text</p>
+    <div width="320px">
+      <img src=\textbf{"../encrypted/img/img1\_test1.jpg.gpg"} >
+      <img src=\textbf{"../encrypted/img/img2\_test1.jpg.gpg"} >
+      <!--15 more images follows-->
+    </div>
+    <p>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv+N72od1JiuvcybR9b7z1WxtShsRm0B9pHDWJc8zB+s3sk}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </p>
+  </body>
+</html>
+\end{Verbatim}
+
+All of the encrypted elements were detected, decrypted and displayed in the web browser, so the \textit{GnuPG Decryptor} extension did as expected and we may proceed to test the decryption of larger data, like audio or video. To demonstrate, how the \textit{GnuPG Decryptor} extension replaced encrypted elements, we appended the simplified HTML schema of the decrypted document. The bolded text has been updated by the \textit{GnuPG Decryptor} extension.
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 02</h1>
+    <p>Decryption test of 17 images and 1 encrypted text</p>
+    <div width="320px">
+      <img
+        \textbf{id="GnuPG\_DecryptorElemId-0"}
+        src=\textbf{"blob:https://www.stud.fit.vutbr.cz/a8e463c9-3fd8..."}
+      >
+      <img
+        \textbf{id="GnuPG\_DecryptorElemId-1"}
+        src=\textbf{"blob:https://www.stud.fit.vutbr.cz/5ce5b051-181f..."}
+      >
+      <!--15 more images follows-->
+    </div>
+    <p \textbf{id="GnuPG\_DecryptorElemId-17"}>\textbf{Testing....}</p>
+  </body>
+</html>
+\end{Verbatim}
+
 \subsection{Large Files}
+To test the decryption of large file, we created a similar HTML page as in the previous section, but instead of the images, we used video and audio elements. Both video and audio are larger than 1\,MB, so they have to be split into blocks in order to be sent by the native messaging API. Since files are smaller than 4\,GB, we set the maximum size of a single message in the content script to 4\,MB. We expect that the implemented web browser extension will split data in the content script into blocks with a size of 3\,MB (75\,\% of the set maximum size) and send them into the native application. The native application should then join those blocks and decrypt the files. Once it is finished, it will split the decrypted data into blocks of size up to 750\,KB and sends them into the content script. The content script is expected to join those blocks and display decrypted content in the web browser. A simplified HTML schema of test document follows:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 03</h1>
+    <p>Decryption test of 1 encrypted video and 1 encrypted audio</p>
+    <div>
+      <audio controls>
+        <source
+          src=\textbf{"../encrypted/audio/audio1-test1.mp3.gpg"}
+          type="audio/mpeg"
+        >
+        Error - browser does not support mp3.
+      </audio>
+    </div>
+    <div>
+      <video width="320" height="240" controls>
+        <source
+          src=\textbf{"../encrypted/video/video4-test4.mp4.gpg"}
+          type="video/mp4"
+        >
+        Error - browser does not support mp4.
+      </video>
+    </div>
+  </body>
+</html>
+\end{Verbatim}
+
+The web browser extensions detected both encrypted files, split them into blocks and sent them to the native application as expected. The native application correctly accepted the blocks, joined them into one buffer and forwarded the data into GnuPG application. Once data was decrypted, the native application split them into blocks and sent them back to the content script. The content script joined received blocks and correctly displayed the decrypted content for the user.
+
 \subsection{Interactive Changes}
+\label{test:interactive}
+I this scenario, we will prepare a more complex test page than in previous tests. We prepared encrypted a CSS file with styles and a javascript code, that will load encrypted content into page after 4\,seconds. We expect the extension to load the detect the encrypted CSS file, decrypt it and load the styles. Once javascript inserts encrypted content into the page, we expect the \textit{MutationObserver} will detect the change, thus enabling the \textit{GnuPG Decryptor} extension to detect new encrypted contents and decrypts it. Here is a simplified HTML schema.
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html>
+  <head>
+    ...
+    <link rel="stylesheet" href=\textbf{"../encrypted/css/styles.css.gpg"}>
+  </head>
+  <body>
+    <script>
+    setTimeout( insert, 4000 );
+    function insert() \{
+      document.getElementById( 'insertHere' ).innerHTML = `
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv/e++Sh8fknwHaSd92p4xUQ9L1FJwnyOIf4Pby2V6A1Qe7}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+`;
+    \}
+    </script>
+    <h1>Test 04</h1>
+    <p>Iteration changes on a page.</p>
+    <p id="insertHere">This content will be replaced.</p>
+  </body>
+</html>
+\end{Verbatim}
+
+The \textit{GnuPG Decryptor} extension did not detect encrypted CSS file as expected. But the extension was able to detect the encrypted content, once JavaScript inserted the content into the page. After this test, we updated the content script to detect the \textit{href} attribute the same way, as it detects the \textit{src} attribute. Once the extension was updated, the content script was able to detect, decrypt and loads the styles into the web page.
+
 
 \section{Advanced Functions}
+\label{test:advancedFunctions}
+In this section, we tested the advanced features of the web browser extension. We started with simple tests, but in the Recursive Decryption (Section \ref{test:recursive}), we tested, how is the web browser extension able to handle complex pages with multiple times encrypted data, encrypted javascript, CSS styles or even whole HTML pages. The tested features were:
+
+\begin{itemize}
+    \item Duplicate Files,
+    \item Multiple Receipments,
+    \item Recursive Decryption.
+\end{itemize}
+
 \subsection{Duplicate Files}
+\label{test:duplicities}
+
+To test the deduplication system, we created another test, that consists of 40 images and 5 encrypted texts. The images has different relative \textit{src} URL but the URL still points to the same file. The text is the same as well but in different elements. We expect that the \textit{GnuPG Decryptor} extension detects 45 encrypted elements but sends to the native application only two. A simplified HTML schema follows:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 05</h1>
+    <p>Deduplication test - The page contains 40 same images
+       with different relative path and same encrypted text
+       in five different elements.</p>
+    <div width="320px">
+      <img src=".././encrypted/img/img1\_test1.jpg.gpg" >
+      <img src="../././encrypted/img/img1\_test1.jpg.gpg" >
+      <!--15 more encrypted images follows-->
+    </div>
+    <p>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv+N72od1JiuvcybR9b7z1WxtShsRm0B9pHDWJc8zB+s3sk}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </p>
+    <h1>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv+N72od1JiuvcybR9b7z1WxtShsRm0B9pHDWJc8zB+s3sk}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </h1>
+    <!--3 more encrypted texts follows in tags <span>, <b> and <del> -->
+  </body>
+</html>
+\end{Verbatim}
+
+The \textit{GnuPG Decryptor} extension detected 45 encrypted elements but sent to the native application only two messages, one as a request to decrypt an image and one as a request to decrypt the armoured text. Therefore the deduplication system works as intended on this simple example. We further tested the deduplication system in the following tests.
+
 \subsection{Multiple Receipments}
+\label{test:receipment}
+
+The GnuPG application allows specifying more than one recipient while encrypting data. To decrypt such encrypted content, it is necessary to have access to at least one of the used keys. The native application should detect, that content can be decrypted with multiple keys and use those keys, that are available. We created a web page, that contains five images. Images were encrypted with 4 different keys -- \textit{test1}, \textit{test2}, \textit{test3} and \textit{test4}. The \textit{test1} key is not protected with a password and was used as recipient of the first two images, so we expect, those images will be decrypted without need for a password. The \textit{test2} key was used as a recipient for
+the second, the third and the fourth image. Once we provide a password for the key, we expect that these images will be decrypted as well. The \textit{test3} key can be used to decrypt the second, the fourth and the fifth image. The \textit{test4} key is used as a recipient for all the images, except the fourth image. So to decrypt all the content, it should be necessary to provide passwords for only two of three keys, that are protected by a password. Follow simplified HTML schema of the test page
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <h1>Test 05</h1>
+    <p>Multiple receipments -- all content should be decrypted
+       using only two of three keys, that are protected by
+       password (test2, test3.test4).</p>
+      <div>
+        <img src="\textbf{../encrypted/img/img12\_test1\_test4.jpg.gpg}" >
+        <img
+          src="\textbf{../encrypted/img/img16\_test1\_test2\_test3\_test4.jpg.gpg}"
+        >
+        <img src="\textbf{../encrypted/img/img14\_test2\_test4.jpg.gpg}" >
+        <img src="\textbf{../encrypted/img/img11\_test2\_test3.jpg.gpg}" >
+        <img src="\textbf{../encrypted/img/img17\_test3\_test4.jpg.gpg}" >
+      </div>
+  </body>
+</html>
+\end{Verbatim}
+
+We tested all combinations of two keys and the whole content of the page was correctly displayed all the times as expected. Therefore we can say, that the \textit{GnuPG Decryptor} extension supports encrypted files for multiple recipients.
+
 \subsection{Recursive Decryption}
+\label{test:recursive}
+In this section, we have tested decryption of the data, that was encrypted multiple times. We expect, that the web browser extension will detect encrypted data, decrypt them, display to the user and then detect new encrypted content, decrypt it and display to the user. Here is a simplified HTML schema of the web document:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    ...
+    <div class="content">
+      <h1>Test 06</h1>
+      <p>Recursive decryption -- data on the page were encrypted
+         two times using different keys.</p>
+      <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA63SHuyrZ3NZAQv/WdlCq6UpbO198drAgHGFRHOAL+dyC5fRegdTuUEjsyQf}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+      </div>
+    </div>
+  </body>
+</html>
+\end{Verbatim}
+
+Encrypted content was successfully detected, decrypted and replaced with new encrypted content. Follows simplified HTML schema after the first decryption (notice the two new \textit{div} elements that were inserted into the page):
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    ...
+    <div class="content">
+      <h1>Test 06</h1>
+      <p>Recursive decryption -- data on the page were encrypted
+         two times using different keys.</p>
+      <div>
+        <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv/Q8y2Vdbxo3Q54TPCVcRGhgE1HkSFZgeLn/dtTK52T9Pk}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+        </div>
+        <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA9GHiHuARJ+MAQv9GabshtHDlYlQrAbiE0/yQnCJkG0n4DlezV8pD+ZEjiLE}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+\end{Verbatim}
+
+The new encrypted elements on the page were detected thanks to the \textit{MutationObserver} and the web browser extension was able to process them and display to the user. Here is simplified HTML schema after the second decryption (notice, that there are still encrypted elements):
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    ...
+    <div class="content">
+      <h1>Test 06</h1>
+      <p>Recursive decryption -- data on the page were encrypted
+         two times using different keys.</p>
+      <div>
+        <div>
+          <audio controls>
+            <source
+              src="\textbf{../encrypted/audio/audio1-test1.mp3.gpg}"
+              type="audio/mpeg"
+            >
+            Error - browser does not support mp3.
+          </audio>
+        </div>
+        <div>
+          <video width="320" height="240" controls>
+            <source
+              src="\textbf{../encrypted/video/video4-test4.mp4.gpg}"
+              type="video/mp40"
+            >
+            Error - browser does not support mp4.
+          </video>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+\end{Verbatim}
+
+The encrypted elements were again detected by the \textit{GnuPG Decryptor} extension and then decrypted. In the next test, we tried to encrypt entire HTML documents. We encrypted the whole HTML file and added a link to the encrypted file into the different HTML document. Then we encrypted everything between the \textit{html} elements:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQwAoeLD/t32FS/IBQeaHq3fdgwXRcgTmb5MTvLRLJvrr4pe}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+</html>
+\end{Verbatim}
+
+The browser detected missing \textit{head} and \textit{body} elements, created the missing elements and put encrypted text into the new \textit{body} element. The extension then detected encrypted content in body element and decrypted it. The browser then removed from decrypted content \textit{head} element, but the content remained. The CSS styles were loaded, although they are in the \textit{body} element of the document. The encrypted HTML document was decrypted as well. Here is decrypted HTML document:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head></head><body id="GnuPG\_DecryptorElemId-0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="author" content="Jiří Matějka (xmatej52)">
+<link
+  rel="stylesheet"
+  href="blob:https://www.stud.fit.vutbr.cz/7f6aad30-ed93..."
+  id="GnuPG\_DecryptorElemId-1"
+>
+<div class="menu">
+  <a href="../html/test06.html">Test 06</a>
+  <a href="../html/test07.html">Test 07</a>
+  <a href="../html/test08.html">Test 08</a>
+  <a href="../html/test09.html">Test 09</a>
+  <a href="../html/test10.html">Test 10</a>
+  <a
+   href="blob:https://www.stud.fit.vutbr.cz/1bc051cf-7c8b..."
+   id="GnuPG\_DecryptorElemId-2"
+  >
+  Periodic Change
+  </a>
+</div>
+<div class="content">
+  <h1>Test 07</h1>
+  <p>Recursive decryption -- Encryption of entire HTML page.</p>
+</div>
+</body></html>
+\end{Verbatim}
+
+Once clicked into the link to the encrypted HTML document, the page was loaded with its content and displayed. But external CSS style and JavaScript was not loaded and the browser did not allow to use links as well. The file was successfully decrypted, but due to its representation as BLOB, it was not functional. As a result of this test, we recommend to encrypt text data only between \textit{body} tags and to not encrypt entire HTML files. But it is still possible to encrypt external CSS styles.
+
+The next test was performed to see, how the web browser extension and the browser will handle encrypted javascript files. We prepared document, that with encrypted external javascript code. The javascript code will then insert encrypted content into the page every 10\,seconds. Here is a simplified HTML schema of the document:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+    <body>
+        <div class="menu">...</div>
+        <div class="content">
+            <h1>Test 08</h1>
+            <p>Testing javascript support.</p>
+            <p id="insertHere">This content will be replaced.</p>
+            <script src="\textbf{../encrypted/javascript/javascript.js.gpg}">
+            </script>
+        </div>
+    </body>
+</html>
+\end{Verbatim}
+
+The encrypted javascript was successfully detected and decrypted, but the browser refused to load the javascript nor execute it. Although removing the element from DOM and putting it back to the page did not help, creating a copy of the element worked. So after updating the source code of the web browser extension, the \textit{GnuPG Decryptor} supports encryption of external JavaScript code. To test the execution of an encrypted internal JavaScript source code, we prepared another test page. Here is a simplified HTML schema:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body>
+    <div class="menu">...</div>
+    <div class="content">
+      <h1>Test 08</h1>
+      <p>Testing javascript support.</p>
+      <p id="insertHere">This content will be replaced.</p>
+      <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA63SHuyrZ3NZAQv/bPyUy4Qott9+nQXm/Wn70b3POzuDurci6Dsvy5nH4ftN}
+\textbf{-----END PGP MESSAGE-----}
+      </div>
+    </div>
+  </body>
+</html>
+\end{Verbatim}
+
+After decryption of the encrypted content, the web browser extension inserted new \textit{script} element with decrypted JavaScript source code into the page. But the page did not execute an internal JavaScript code.
+
+As the last test, we prepared a document, where all implemented the features and will be possible to demonstrate. Below are several steps in decryption with a detailed explanation of the decryption process. Here is the encrypted HTML page:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Jiří Matějka (xmatej52)">
+    <link rel="stylesheet" href="\textbf{../encrypted/css/styles.css.gpg}">
+  </head>
+  <body id="body">
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA9GHiHuARJ+MAQwAtPLNJ+FIaAnnv+Jvx+p4AqrIV/FNJGfYqPFQHJRAe9a8}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+  </body>
+</html>
+\end{Verbatim}
+
+The \textit{GnuPG Decryptor} extension detected two elements and sent then to the native application for decryption. Since we did not provide the native application passwords for keys, the GnuPG application asked for keys and then decrypted content. The decrypted content was then sent to the content script, that inserted decrypted content into the page:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Jiří Matějka (xmatej52)">
+    <link
+      id="GnuPG\_DecryptorElemId-0"
+      rel="stylesheet"
+      href="blob:https://www.stud.fit.vutbr.cz/b9fff6c3-8d9a...">
+  </head>
+  <body id="body">
+    <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA9GHiHuARJ+MAQwAit/BxUPbYjrKvlqdhLArclTo/P9KmrGbZG22wmirV/G7}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </div>
+    <div class="menu">
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA63SHuyrZ3NZAQv+LJF6ktKj3q96sDGujGVoYOmvLmks2/Kg9nPGbnI2gccy}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+    </div>
+    <div class="content">
+      <h1 id="header">-----BEGIN PGP MESSAGE-----
+
+\textbf{hQGMA63SHuyrZ3NZAQwAi2Yn006ZU0kuz/O+uSFd5SKj2Rm95lSPLMGzMdanluYM}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}</h1>
+      <p>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA1XcsG3hc6mnAQv+K3+uYJ6WKbO8SBr/M26vvSGXvPx627CP6C1wc03jw7Kw}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+      </p>
+      <div>
+\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA1XcsG3hc6mnAQv+IvfkpQBKlaoaH+VwGDOWbVlw0/c3QKiqwGN5CFyrhjkL}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}
+      </div>
+      <div>
+        <audio controls>
+          <source
+            src="\textbf{../encrypted/audio/audio1-test1.mp3.gpg}"
+            type="audio/mpeg"
+          >
+          Error - browser does not support mp3.
+        </audio>
+      </div>
+      <div>
+        <video width="320" height="240" controls>
+          <source
+            src="\textbf{../encrypted/video/video4-test4.mp4.gpg}"
+            type="video/mp4"
+          >
+          Error - browser does not support mp4.
+        </video>
+      </div>
+      <p id="insertHere"></p>
+      <button onclick="setContent( 'body' );">Click me</button>
+    </div class="content">
+  </body>
+</html>
+\end{Verbatim}
+
+As soon as the content script inserted the decrypted content, the \textit{MutationObserver} detected the change in the \textit{link} and \textit{body} elements and these elements were given for further processing. During the process, new encrypted elements were detected in the \textit{body} of the HTML page and sent for decryption.
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body id="body">
+    <div>
+      <script src="\textbf{../encrypted/javascript/javascript.js.gpg}"></script>
+    </div>
+    <div id="GnuPG\_DecryptorElemId-1" class="menu">
+      <!--5 links leading to other test pages-->
+      <a href="\textbf{../encrypted/html/periodicContentChange.html.gpg}">
+        Periodic Change
+      </a>
+    </div>
+    <div class="content">
+      <h1 id="header">Test 10</h1>
+      <p id="GnuPG\_DecryptorElemId-2">
+        Testing all the functionalities.
+      </p>
+      <div id="GnuPG\_DecryptorElemId-3">
+        <img src="\textbf{../encrypted/img/img1\_test1.jpg.gpg}" >
+        <!--4 more encrypted images follows-->
+      </div>
+      <div>
+        <audio controls>
+          <source
+            src="blob:https://www.stud.fit.vutbr.cz/ba4c332a-c875..."
+            type="audio/mpeg"
+            id="GnuPG\_DecryptorElemId-4"
+          >
+          Error - browser does not support mp3.
+        </audio>
+      </div>
+      <div>
+        <video width="320" height="240" controls>
+          <source
+            src="blob:https://www.stud.fit.vutbr.cz/9d0a4f51-f8aa..."
+            type="video/mp4"
+            id="GnuPG\_DecryptorElemId-5"
+          >
+          Error - browser does not support mp4.
+        </video>
+      </div>
+      <p id="insertHere"></p>
+      <button onclick="setContent( 'body' );">Click me</button>
+    </div class="content">
+  </body>
+</html>
+\end{Verbatim}
+
+Once again, the \textit{MutationObserver} detected the changes and changed elements were further processed and new encrypted files were detected, decrypted and decrypted content was displayed. In the case of JavaScript, a copy of the \textit{script} element was created and the original element was replaced with the copy, thus the javascript was loaded and executed.
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body id="body">
+    <div>
+      <script
+        id="GnuPG\_DecryptorElemId-6"
+        src="\textbf{../encrypted/javascript/javascript.js.gpg}"></script>
+    </div>
+    <div class="menu">
+      ...
+      <a
+        href="blob:https://www.stud.fit.vutbr.cz/c3963a82-a393..."
+        id="GnuPG\_DecryptorElemId-7"
+      >
+        Periodic Change
+      </a>
+    </div>
+    <div class="content">
+      <h1 id="header">Test 10</h1>
+      <p id="GnuPG\_DecryptorElemId-2">
+        Testing all the functionalities.
+      </p>
+      <div>
+        <img
+          id="GnuPG\_DecryptorElemId-8"
+          src="blob:https://www.stud.fit.vutbr.cz/35405d32-9421..."
+        >
+        <!--4 more decrypted images follows-->
+      </div>
+      <!--Here are decrypted audio and video files-->
+      <p id="insertHere">\textbf{-----BEGIN PGP MESSAGE-----}
+
+\textbf{hQGMA4gRpLdh4RX7AQv/e++Sh8fknwHaSd92p4xUQ9L1FJwnyOIf4Pby2V6A1Qe7}
+\textbf{...}
+\textbf{-----END PGP MESSAGE-----}</p>
+      <button onclick="setContent( 'body' );">Click me</button>
+    </div class="content">
+  </body>
+</html>
+\end{Verbatim}
+
+Soon after decrypting the whole page, javascript inserted another encrypted content to the page. This content was again detected thanks to the \textit{MutationObserver} and successfully decrypted. The last step, in this test, will be executing the JavaScript function \textit{setContent} by clicking the button at the bottom of the page. By doing so, we replaced all the content in the page with encrypted data (whole \textit{body} of the document was replaced by an encrypted content again). But this time, no data were sent to the native application. The decrypted content is already available for the content script and the content script will now only find the encrypted elements, detect that encrypted data were already decrypted and will replace the encrypted content with decrypted data from its memory. Here is a simplified HTML schema after executing the JavaScript several times:
+
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`$=3\catcode`_=8},samepage=false,frame=single]
+<html><head>...</head>
+  <body id="body">
+    <div>
+    ...
+    <!--Here are decrypted menu items and script.-->
+    ...
+    <div class="content">
+      <h1 id="header">Test 10</h1>
+      <p id="GnuPG\_DecryptorElemId-48">
+        Testing all the functionalities.
+      </p>
+      ...
+      <!--Here are decrypted audio, video and image files-->
+      ...
+      <p id="insertHere">
+        <div class="frame">
+          <div>
+            <p>Zašifrovaný audio soubor</p>
+            <audio controls="">
+                <source
+                  src="blob:https://www.stud.fit.vutbr.cz/..."
+                  type="audio/mpeg"
+                  id="GnuPG\_DecryptorElemId-375"
+                >
+                Error - browser does not support mp3.
+            </audio>
+          </div>
+        </div>
+      </p>
+      <button onclick="setContent( 'body' );">Click me</button>
+    </div class="content">
+  </body>
+</html>
+\end{Verbatim}
 
 \section{Performance}
-\subsection{Pages with Encrypted Elements}
-\subsection{Pages without Encrypted Elements}
+\label{test:performance}
+With all the functionalities and features tested, we may proceed to test the performance of the web browser extension. We tested the performance on pages with encrypted content and the pages without any encrypted content (to see, how the web browser extension influences the browser performance on those pages).
 
-\chapter{Current State of Development} %alespon 3 stranky
-\section{Browser Support}
-\section{Future Development}
+\subsection{Pages with Encrypted Elements}
+Since to slowest part of the process is downloading the content, we measured the time between the time the content was downloaded and the time, it was replaced. The measures must be therefore performed in the content script. We also measured the time it took the native application and GnuPG application to decrypt the data and send them to the content application. For measurements, we used pages from the previous testing. The average size of used encrypted image is appropriately 100\,KB. The sizes of encrypted videos are 11.5\,MB, 24\,MB, 28.5\,MB and 73.7\,MB. And the sizes of encrypted audio tracks are 4.7\,MB, 7.5\,MB, 8\,MB and 9.4\,MB.
+
+\subsubsection*{Test 01}
+This test was performed on the \textit{Test 10} page (Section \ref{test:detection}). The page contains 17 images, 4 audio tracks and 4 videos and 1 encrypted text. The tests were performed 15 times and between each test, the cache of a browser was cleared. The first decrypted element was the text. The detection of encrypted elements took about 25\,ms. The text was displayed on average of 0.5\,s from its detection and was decrypted on average of 0.4\,s. Each of the images was decrypted in approximately 0.4\,s and the last image was displayed on average of 6.5\,s since it was downloaded. The smallest audio track was decrypted in approximately 0.7\,s and was displayed on average of 2.8\,s after its download, the largest audio track was decrypted in approximately 0.8\,s and was displayed 6\,3 ms after it was downloaded as a last audio track. The smallest video was decrypted in approximately 0.8\,s and was displayed in a browser after approximately 6.2\,s. The largest video was always decrypted between 2.8\,s and 3.5\,s and was displayed between 65\,s and 78\,s for the user.
+
+\subsubsection*{Test 10}
+This test was performed on the \textit{Test 10} page (last test is the section \ref{test:recursive}). The test was performed again 15 times and between each test, the cache of a browser was cleared. The page contains an encrypted video (8\,MB), two encrypted audio tracks (same files of size 4.7\,MB), encrypted external javascript, encrypted external CSS, encrypted external HTML page, several encrypted images and several encrypted HTML elements with content. The content on the page is encrypted multiple times.
+
+The first detection of the elements did not take longer than 6\,ms. The decrypted \textit{body} of the document was displayed in 0.5\,s after its detection and was decrypted in approximately 0.4\,s. The external CSS styles and javascript were decrypted in 0.4\,ms and it took them 0.5\,s to be displayed on the page since they were downloaded. The menu of the page was decrypted in approximately 0.5\,s and was displayed 0.8\,s since its detection. Each of the images was decrypted in approximately 0.4\,s and the last image was displayed on average of 3.7\,s after its download. The audio was decrypted in 0.5\,s and was displayed after in approximately 7.5\,s since its availability. The video vas decrypted in 1\,s and was displayed 6.3\,s since its download. Once the button on the page was clicked (to replace all decrypted content with encrypted one again), it took only appropriately 35\,ms to display decrypted content again.
+
+\subsubsection*{Threads in the Native Application}
+\label{test:performanceThreads}
+The performed tests showed that which each encrypted element on a page, there is an increasing delay between the availability of encrypted content and its replacement by decrypted one. We thought, that one of the causes of the delay is, that the native application does not manage to decrypt as fast as the content is processed to it. Due to this assumption, we updated the native application with \textit{threading} library and the decryption was processed with threads. But this modification had only effect on pages with large encrypted files and it only allowed to process the smaller content, while the large content was being processed. The main advantage is the responsibility of the application -- the user can open the GUI window during the encryption (without threads, the window is opened once all content is decrypted).
+
+The main problem, why there is the increasing time it takes to display decrypted content is the increasing number of message needed to be exchanged between the native application, the background script and the content application. In case of large files, the data must be split into small blocks and the blocks need to be sent separately and then joined. All of this has a negative influence on the processing time of decrypted content and is the reason for the time it took the decrypted content to be displayed.
+
+\subsection{Pages without Encrypted Elements}
+Since encryption will try to detect encrypted content on every page the user will visite, we made measured the time it took the extension to test a web page for encrypted content. We measured the most 15 visited pages \cite{topPages}. We visited the page, browsed them and measured times it took the web browser extension to scan them fro encrypted content. The time statistics can be seen in the table \ref{tab:time} below.
+
+\begin{table}[]
+\label{tab:time}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{Domain} & Minimum time {[}ms{]} & Average time {[}ms{]} & Maximum time {[}ms{]} \\ \hline
+youtube.com                  & 88                    & 175.5                 & 329                   \\ \hline
+en.wikipedia.org             & 10                    & 44                    & 84                    \\ \hline
+twitter.com                  & 5                     & 19.8                  & 34                    \\ \hline
+facebook.com                 & 126                   & 76                    & 33                    \\ \hline
+amazon.com                   & 32                    & 58.4                  & 136                   \\ \hline
+yelp.com                     & 177                   & 115.5                 & 79                    \\ \hline
+reddit.com                   & 88                    & 63.6                  & 35                    \\ \hline
+imdb.com                     & 106                   & 74                    & 42                    \\ \hline
+fandom.com                   & 63                    & 56.6                  & 47                    \\ \hline
+pinterest.com                & 13                    & 8.6                   & 3                     \\ \hline
+tripadvisor.com              & 22                    & 15.6                  & 11                    \\ \hline
+instagram.com                & 36                    & 23.2                  & 15                    \\ \hline
+walmart.com                  & 148                   & 82.4                  & 54                    \\ \hline
+craigslist.org               & 28                    & 14.2                  & 6                     \\ \hline
+ebay.com                     & 140                   & 80.4                  & 58                    \\ \hline
+\end{tabular}
+\caption{Time statistics of scannig pages without encrypted content.}
+\end{table}
+
+The web browser extension scans every element in the page for encrypted content. The more element the page has, the more time it takes to scan them. Most of the pages listed in the table \ref{tab:time} use APIs that allows loading the content of a page separately. In these cases, we measured the time it took to process it took the extension to scan these changes in the web page, not the whole page.
 
 \chapter{Conclusion}
+In this thesis, I developed a web browser extension that detects and decrypts elements on a web page. I started by studying the GnuPG project and the OpenPGP standard. I focused on the implementation of the Linux application \textit{gpg} and the OpenPGP message format to learn how to use the \textit{gpg} application and how to detect encrypted content in OpenPGP format.
+
+After getting familiar with the GnuPG project and the OpenPGP standard, I focused on the WebExtensions API, that can be used to implement extensions or add-ons for the Mozilla Firefox web browser. Once I learned about the WebExtensions API, I used gained knowledge to create a detailed design of an extension for the Mozilla Firefox browser that allows decrypting parts of a web page. I proposed a suitable approach to detects encrypted objects. Last but not least, I came up with a solution that is able to detect interactive changes to the page performed employing XHR API, Fetch API or Push API.
+
+Great effort was also dedicated to the development process of the software. The extension was implemented in six iterations. Each iteration was designated before the implementation. We also tested the implementation for possible bugs and examined it to find its lacks and possible improvements. In addition, we implemented web pages to test all of the functionalities and features in the last two iterations of the development. We also tested the implemented browser extension on the most popular pages to measure, how the extension influences the browser performance.
+
+The thesis resulted in implemented web browser extension that is able  is able to detect and decrypt various encrypted elements on a web page and detects any dynamic changes that are made to the DOM by JavaScript or specific APIs (XHR API, Getch API, Push API, etc.). Therefore the software implemented in the thesis can be used as one of the comfortable ways of protecting sensitive content (family pictures, source codes, passwords, etc.) that is stored on public or third-party servers.
+
+The web browser extension is implemented for the GNU/Linux operating system and the Mozilla Firefox browser. The extension was reviewed by Mozilla developers and then published on the Mozilla addons page as well as on GitHub.
+
+In the future, the extension can be modified for different browsers, like Google Chrome, Opera or Microsoft Edge. The new native application can be created to support more operating systems then just GNU/Linux systems.

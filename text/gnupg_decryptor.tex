@@ -25,19 +25,19 @@
 %\documentclass[english,zadani,print]{fitthesis} % for the black and white print - links are black
 %\documentclass[zadani,cprint]{fitthesis} % pro barevný tisk - odkazy jsou černé, znak VUT barevný
 %\documentclass[english,zadani,cprint]{fitthesis} % for the print - links are black, logo is color
-% * Je-li práce psaná v anglickém jazyce, je zapotřebí u třídy použít 
+% * Je-li práce psaná v anglickém jazyce, je zapotřebí u třídy použít
 %   parametr english následovně:
-%   If thesis is written in English, it is necessary to use 
+%   If thesis is written in English, it is necessary to use
 %   parameter english as follows:
 %      \documentclass[english]{fitthesis}
-% * Je-li práce psaná ve slovenském jazyce, je zapotřebí u třídy použít 
+% * Je-li práce psaná ve slovenském jazyce, je zapotřebí u třídy použít
 %   parametr slovak následovně:
-%   If the work is written in the Slovak language, it is necessary 
+%   If the work is written in the Slovak language, it is necessary
 %   to use parameter slovak as follows:
 %      \documentclass[slovak]{fitthesis}
-% * Je-li práce psaná v anglickém jazyce se slovenským abstraktem apod., 
+% * Je-li práce psaná v anglickém jazyce se slovenským abstraktem apod.,
 %   je zapotřebí u třídy použít parametry english a enslovak následovně:
-%   If the work is written in English with the Slovak abstract, etc., 
+%   If the work is written in English with the Slovak abstract, etc.,
 %   it is necessary to use parameters english and enslovak as follows:
 %      \documentclass[english,enslovak]{fitthesis}
 
@@ -78,7 +78,7 @@
 % problém je, že balíček hyperref musí být uveden jako poslední, takže nemůže
 % být v šabloně
 % "hyperref" package create clickable links in pdf if you are using pdflatex.
-% Problem is that this package have to be introduced as the last one so it 
+% Problem is that this package have to be introduced as the last one so it
 % can not be placed in the template file.
 \ifWis
 \ifx\pdfoutput\undefined % nejedeme pod pdflatexem / we are not using pdflatex
@@ -118,7 +118,7 @@
 %---------------------------------------------------------------------------
 \projectinfo{
   %Prace / Thesis
-  project={SP},            %typ práce BP/SP/DP/DR  / thesis type (SP = term project)
+  project={DP},            %typ práce BP/SP/DP/DR  / thesis type (SP = term project)
   year={2020},             % rok odevzdání / year of submission
   date=\today,             % datum odevzdání / submission date
   %Nazev prace / thesis title
@@ -128,13 +128,13 @@
   %sectitle.length={14.5cm}, % nastavení délky bloku s druhým titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a second thesis title for adjusting a line break (can be defined here or below)
   %Autor / Author
   author.name={Jiří},   % jméno autora / author name
-  author.surname={Matějka},   % příjmení autora / author surname 
+  author.surname={Matějka},   % příjmení autora / author surname
   author.title.p={Bc.}, % titul před jménem (nepovinné) / title before the name (optional)
   %author.title.a={Ph.D.}, % titul za jménem (nepovinné) / title after the name (optional)
   %Ustav / Department
   department={UIFS}, % doplňte příslušnou zkratku dle ústavu na zadání: UPSY/UIFS/UITS/UPGM / fill in appropriate abbreviation of the department according to assignment: UPSY/UIFS/UITS/UPGM
   % Školitel / supervisor
-  supervisor.name={Libor},   % jméno školitele / supervisor name 
+  supervisor.name={Libor},   % jméno školitele / supervisor name
   supervisor.surname={Polčák},   % příjmení školitele / supervisor surname
   supervisor.title.p={Ing.},   %titul před jménem (nepovinné) / title before the name (optional)
   supervisor.title.a={Ph.D.},    %titul za jménem (nepovinné) / title after the name (optional)
@@ -143,9 +143,9 @@
   keywords.en={GPG, GnuPG, OpenPGP, cryptography, WebExensions}, % klíčová slova v anglickém jazyce / keywords in english
   %keywords.en={Here, individual keywords separated by commas will be written in English.},
   % Abstrakt / Abstract
-  abstract.cs={Cílem mého semestrálního projektu bylo seznámení se s projektem \textit{The GNU Privacy Guard Project} a implementací webových rozšíření. Na základě nabytých znalostí posléze navrhnout rozšíření pro webový prohlížeč Firefox, které bude schopno detekovat a dešifrovat zašifrované části webové stránky s využitím GPG. U projektu \textit{The GNU Privacy Guard Project} jsem se zaměřil na způsob, jakým se šifrují a podepisují data, na Linuxovou aplikaci gpg a na alternativní implementace \textit{OpenPGP} standardu vhodných pro použití při vývoji webových rozšíření. Dále jsem popsal, jak se vyvíjí webová rozšíření pro webový prohlížeč Firefox a možnosti komunikace takového rozšíření s nativní aplikací v počítači. Na závěr jsem definoval postup, jakým způsobem bude probíhat implementace takového rozšíření, popsal dva implementované prototypy a navrhl, jak bude probíhat další vývoj webového rozšíření v rámci navazující diplomové práci.},
+  abstract.cs={Cílem této práce je navrhnout a implementovat způsob zabezpečení citlivých dat na veřejných serverech nebo serverech třetích stran. Práce se zabývá implementací rozšíření pro webový prohlížeč Mozilla Firefox, které bude schopno nalézt a dešifrovat zašifrované prvky webové stránky s využitím výstupů GnuPG projektu. Rozšíření musí být dále schopno zpracovat dynamické změny webové stránky způsobené použitím XHR API, Fetch API, či Push API. V neposlední řadě se práce zabývá testováním implementovaného řešení a měření vlivu rozšíření na celkovou dobu zpracování webových stránek prohlížečem.},
    % abstrakt v českém či slovenském jazyce / abstract in czech or slovak language
-  abstract.en={The aim of my term project was to get acquainted with \textit{The GNU Privacy Guard Project} and a web browser extension development process. Then based on acquired knowledge, design a web browser extension for Firefox. The browser extension should be able to detect and decrypt encrypted elements of a web page using GPG. In the case of \textit{The GNU Privacy Guard Project}, I focused on data encryption and decryption process, the Linux command--line application gpg and alternative software implementations of the \textit{OpenPGP} standard that is suitable for developing web browser extensions. Then I described, how are developed web browsers extensions for Firefox and how web extensions can communicate with a native application installed on a user's computer. In conclusion, I defined the software development process of this thesis, described developed prototypes and designed, how the future development will proceed.}, % abstrakt v anglickém jazyce / abstract in english
+  abstract.en={The aim of the thesis is to design and implement a solution to secure sensitive data on public servers or third-party servers. The thesis deals with an implementation of a web browser extension for Mozilla Firefox browser, that will be able to detect and decrypt encrypted objects on a web page. The extension must be able to process dynamic changes on the web page caused by the usage of XHR API, Fetch API or Push API. The last but not least, the thesis deals with the testing of the implemented solution and measuring its influence on the performance of the browser.}, % abstrakt v anglickém jazyce / abstract in english
   %abstract.en={An abstract of the work in English will be written in this paragraph.},
   % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky) / Declaration (for thesis in english should be in english)
   declaration={I declare that I have carried out the Master’s thesis independently under supervision of \textit{Ing. Libor Polčák, Ph.D.} from \textit{Brno University of Technology}, that the work contained herein is my own except where explicitly stated otherwise in the text, and that this work has not been submitted for any other degree or processional qualification.},
@@ -191,7 +191,7 @@
   \setlength{\parskip}{0pt}
 
   {\hypersetup{hidelinks}\tableofcontents}
-  
+
   % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
   % List of figures and list of tables (if the thesis contains a lot of pictures, it is good)
   \ifczech
@@ -201,7 +201,7 @@
     \renewcommand\listfigurename{Zoznam obrázkov}
   \fi
   % {\hypersetup{hidelinks}\listoffigures}
-  
+
   \ifczech
     \renewcommand\listtablename{Seznam tabulek}
   \fi
@@ -229,7 +229,7 @@
   \else
     \input{gnupg_decryptor-01-kapitoly-chapters}
   \fi
-  
+
   % Kompilace po částech (viz výše, nutno odkomentovat)
   % Compilation piecewise (see above, it is necessary to uncomment it)
   %\subfile{projekt-01-uvod-introduction}
@@ -250,7 +250,7 @@
     \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
     \makeatother
     \bibliographystyle{bib-styles/Pysny/czplain}
-  \else 
+  \else
     \makeatletter
     \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
     \makeatother
@@ -288,7 +288,7 @@
 %\iftwoside
 %  \cleardoublepage
 %\fi
-  
+
 \ifslovak
 %  \section*{Zoznam príloh}
 %  \addcontentsline{toc}{section}{Zoznam príloh}
@@ -302,30 +302,30 @@
   \fi
 \fi
   \startcontents[chapters]
-  \setlength{\parskip}{0pt} 
+  \setlength{\parskip}{0pt}
   % seznam příloh / list of appendices
   % \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
-  
+
   \ifODSAZ
     \setlength{\parskip}{0.5\bigskipamount}
   \else
     \setlength{\parskip}{0pt}
   \fi
-  
+
   % vynechani stranky v oboustrannem rezimu
   \iftwoside
     \cleardoublepage
   \fi
-  
+
   % Přílohy / Appendices
   \ifenglish
     \input{gnupg_decryptor-30-prilohy-appendices-en}
   \else
     \input{gnupg_decryptor-30-prilohy-appendices}
   \fi
-  
+
   % Kompilace po částech (viz výše, nutno odkomentovat)
   % Compilation piecewise (see above, it is necessary to uncomment it)
   %\subfile{gnupg_decryptor-30-prilohy-appendices}
-  
+
 \end{document}
