@@ -154,27 +154,26 @@ class GnuPG_Decryptor:
         """
 
         # command line arguments
-        args = [ 'gpg', '-d', '--list-only' ]
+        args = [ 'gpg', '--list-packets', '--list-only' ]
 
         # call gpg
         process = Popen( args ,stdin=PIPE, stdout=PIPE, stderr=PIPE )
-        _, stderr = process.communicate( data )
+        stdout, _ = process.communicate( data )
         retcode = process.returncode
         keys  = []
 
         # if success
         if ( retcode == 0 ):
             # output is on stderr
-            stderr   = stderr.decode().splitlines()
+            stdout   = stdout.decode().splitlines()
             # we care only about lines starting with "gpg: encrypted"
-            filtered = [ line for line in stderr if line.startswith( 'gpg: encrypted' )  ]
+            filtered = [ line for line in stdout if line.startswith( ':pubkey' )  ]
             for line in filtered:
                 # find where ID/fingerprint is
-                idx1 = line.find( ', ID' ) + 5
+                idx1 = line.find( 'keyid ' ) + 6
                 idx2 = line.find( ',', idx1 )
                 if ( idx2 == -1 ):
                     idx2 = len( line )
-
                 # get uid from id/fingerprint
                 uid = self.getKeyUidFromId( line[ idx1 : idx2 ] )
                 if ( not uid is None ):
